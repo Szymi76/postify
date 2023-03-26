@@ -14,28 +14,23 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    expires_at        Int?
+    id                          String  @id @default(cuid())
+    userId                      String
+    type                        String
+    provider                    String
+    providerAccountId           String
+    refresh_token               String? // @db.Text
+    access_token                String? // @db.Text
+    expires_at                  Int?
     refresh_token_expires_in    Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    token_type                  String?
+    scope                       String?
+    id_token                    String? // @db.Text
+    session_state               String?
+    user                        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
 }
@@ -49,14 +44,27 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    lastOnline    DateTime?  @default(now())
-    accounts      Account[]
-    sessions      Session[]
+    id                     String            @id @default(cuid())
+    name                   String?
+    email                  String?          @unique
+    emailVerified          DateTime?
+    image                  String?
+    lastActive             DateTime?        @default(now())
+    backgroundImage        String?
+    description            String?          @default("Oto mój profil 🙂")
+    accounts               Account[]
+    sessions               Session[]
+    senderFirendships      Friendship[]     @relation("senderFriendships")
+    receiverFriendships    Friendship[]     @relation("receiverFriendships")
+    notification           Notification[]   
+    posts                  Post[]           
+    taggedUser             TaggedUser[]     
+    likes                  Like[]           
+    bookmarked             Bookmarked[]     
+    comments               Comment[]        
+    participants           Participant[]    
+    creators               Community[]      
+    SeenBy                   SeenBy[]           
 }
 
 model VerificationToken {
@@ -65,4 +73,112 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+// Other
+model Friendship  {
+    id              String      @id @default(cuid())
+    senderId        String
+    sender          User        @relation("senderFriendships", fields: [senderId], references: [id], onDelete: Cascade)
+    receiverId      String  
+    receiver        User        @relation("receiverFriendships", fields: [receiverId], references: [id], onDelete: Cascade)
+    status          String
+    createdAt       DateTime    @default(now()) 
+    acceptedAt      DateTime?    
+}
+
+model Notification {
+    id          String      @id @default(cuid())
+    userId      String      
+    user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    SeenBy        DateTime?
+    type        String
+    text        String
+    createdAt   DateTime    @default(now())
+}
+
+model Post {
+    id              String            @id @default(cuid())
+    authorId        String     
+    author          User              @relation(fields: [authorId], references: [id], onDelete: Cascade) 
+    communityId     String?
+    community       Community?        @relation( fields: [communityId], references: [id])
+    text            String
+    images          String[]
+    editedAt        DateTime?
+    taggedUsers     TaggedUser[]      
+    likes           Like[]            
+    bookmarked      Bookmarked[]      
+    comments        Comment[]        
+    seenBy          SeenBy[]           
+    updatedAt       DateTime?         @updatedAt
+    createdAt       DateTime          @default(now())
+}
+
+model TaggedUser {
+    id              String      @id @default(cuid())
+    postId          String
+    post            Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
+    taggedUserId    String
+    taggedUser      User        @relation(fields: [taggedUserId], references: [id], onDelete: Cascade)
+    createdAt       DateTime    @default(now())
+}
+
+model Like {
+    id          String      @id @default(cuid())
+    postId      String      
+    post        Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
+    userId      String
+    user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt   DateTime    @default(now())
+}
+
+model Bookmarked {
+    id          String      @id @default(cuid())
+    userId      String
+    user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    postId      String
+    post        Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
+    createdAt   DateTime    @default(now())
+}
+
+model SeenBy {
+    id          String      @id @default(cuid())
+    userId      String
+    user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    postId      String
+    post        Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
+    createdAt   DateTime    @default(now())
+}
+
+model Comment {
+    id          String      @id @default(cuid())
+    authorId    String      
+    author      User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    postId      String      
+    post        Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
+    text        String
+    updatedAt   DateTime    @updatedAt
+    createdAt   DateTime    @default(now())
+}
+
+model Community {
+    id              String          @id @default(cuid())
+    participants    Participant[]   
+    posts           Post[]          
+    creatorId       String
+    creator         User            @relation( fields: [creatorId], references: [id], onDelete: Cascade)
+    name            String
+    type            String
+    updatedAt       DateTime        @updatedAt
+    createdAt       DateTime        @default(now())
+}
+
+model Participant {
+    id                  String      @id @default(cuid())
+    participantId       String
+    participant         User        @relation(fields: [participantId], references: [id], onDelete: Cascade)     
+    communityId         String
+    community           Community   @relation(fields: [communityId], references: [id], onDelete: Cascade)
+    joinedAt            DateTime    @default(now())
 }

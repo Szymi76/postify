@@ -26,7 +26,8 @@ const server = z.object({
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
   EMAIL_SERVER: z.string(),
-  EMAIL_FROM: z.string()
+  EMAIL_FROM: z.string(),
+  NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY: z.string()
 });
 
 /**
@@ -34,7 +35,7 @@ const server = z.object({
  * built with invalid env vars. To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
-  // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+  NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY: z.string()
 });
 
 /**
@@ -55,7 +56,8 @@ const processEnv = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   EMAIL_SERVER: process.env.EMAIL_SERVER,
-  EMAIL_FROM: process.env.EMAIL_FROM
+  EMAIL_FROM: process.env.EMAIL_FROM,
+  NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY: process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY
 
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
