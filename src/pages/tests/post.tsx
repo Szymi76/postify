@@ -1,7 +1,7 @@
 import { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "../../utils/api";
 
 const POST_ID = "clfputss00018v2hoyzrfnx3c";
 

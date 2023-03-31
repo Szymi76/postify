@@ -1,3 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-sm {
+    @apply h-10;
+}
+
+.btn-secondary {
+    @apply border bg-white border-slate-200 hover:bg-gray-200 hover:border-gray-300;
+}
+
+.input {
+    @apply bg-white
+}
+
+.input-sm {
+    @apply h-10 text-[1rem];
+}
+
+.dropdown-content {
+    @apply border border-slate-200 shadow-none bg-white rounded-lg;
+}
+
+.modal-box {
+    @apply shadow-none border border-slate-300
+}
+
+.tooltip:before {
+    @apply text-white bg-gray-700 bg-opacity-80
+}
+
+.textarea-secondary {
+    @apply bg-white
+}
+

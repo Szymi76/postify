@@ -99,6 +99,9 @@ export const authOptions: NextAuthOptions = {
     brandColor: "#3b82f6",
     colorScheme: "light",
   },
+  pages: {
+    signIn: "/auth/signin",
+  },
 };
 /**
  * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.

@@ -2,7 +2,7 @@ import { Friendship, Notification, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import React, { useEffect } from "react";
 
-import { api } from "~/utils/api";
+import { api } from "../../utils/api";
 
 type FriendshipStatus = "friend" | "sent" | "received" | "no-friend";
 

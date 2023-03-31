@@ -64,7 +64,7 @@ model User {
     comments               Comment[]        
     participants           Participant[]    
     creators               Community[]      
-    SeenBy                   SeenBy[]           
+    SeenBy                 SeenBy[]           
 }
 
 model VerificationToken {

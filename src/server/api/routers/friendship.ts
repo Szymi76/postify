@@ -1,6 +1,6 @@
 import { Friendship, User } from "@prisma/client";
 import { z } from "zod";
-import { noti } from "~/utils/other";
+import { noti } from "../../../utils/other";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../../../server/api/trpc";
 
