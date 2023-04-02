@@ -7,9 +7,9 @@ export const postRouter = createTRPCRouter({
   add: protectedProcedure
     .input(
       z.object({
-        text: z.string().min(1).max(120),
-        images: z.string().array().max(4),
-        taggedUsersIds: z.string().array().max(3),
+        text: z.string().max(120),
+        images: z.string().array(),
+        taggedUsersIds: z.string().array(),
         communityId: z.string().optional(),
       })
     )

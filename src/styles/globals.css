@@ -36,3 +36,12 @@
     @apply bg-white
 }
 
+@layer components {
+    .layout {
+        @apply border border-slate-200 rounded-lg bg-white p-5;
+    }
+    .btn-action {
+        @apply btn-outline btn-sm btn relative gap-2 text-xs;
+    }
+}
+

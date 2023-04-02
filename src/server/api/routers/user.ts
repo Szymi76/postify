@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../../../server/api/trpc";
+import { User } from "@prisma/client";
 
 export const userRouter = createTRPCRouter({
   // aktualizacja nazwy, zdjęcia profilowego i zdjęcia w tle
@@ -42,4 +43,30 @@ export const userRouter = createTRPCRouter({
   delete: protectedProcedure.mutation(async ({ ctx }) => {
     await ctx.prisma.user.delete({ where: { id: ctx.session.user.id } });
   }),
+
+  // szukanie użytkownika po nazwie
+  find: protectedProcedure
+    .input(z.object({ query: z.string(), omitMe: z.boolean().optional() }))
+    .query(async ({ ctx, input }) => {
+      const users = await ctx.prisma.user.findMany({
+        where: {
+          name: {
+            startsWith: input.query,
+          },
+        },
+      });
+
+      return input.omitMe ? users.filter((user) => user.id != ctx.session.user.id) : users;
+    }),
+
+  // zwraca użytkowników na podstawie id
+  getByIds: protectedProcedure
+    .input(z.object({ ids: z.string().array() }))
+    .query(async ({ ctx, input }) => {
+      const usersPromises = input.ids.map((id) => ctx.prisma.user.findUnique({ where: { id } }));
+      const users = await Promise.all(usersPromises);
+      const notNullUsers = users.filter((user) => user != null) as User[];
+
+      return notNullUsers;
+    }),
 });
