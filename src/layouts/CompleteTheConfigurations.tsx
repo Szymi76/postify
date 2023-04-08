@@ -15,7 +15,7 @@ type Props = {
   export default OrderDetail;
  */
 
-export const Protected = ({ children }: Props): JSX.Element => {
+export const CompleteTheConfiguration = ({ children }: Props): JSX.Element => {
   const router = useRouter();
   const { status: sessionStatus, data: currentUser } = useSession();
   const authorized = sessionStatus === "authenticated";
@@ -24,18 +24,11 @@ export const Protected = ({ children }: Props): JSX.Element => {
 
   const isUserHaveNoName = !Boolean(currentUser?.user.name);
 
+  const isUserAlreadyOnConfPage = router.asPath.includes("complete-the-configurations");
+
   useEffect(() => {
     // check if the session is loading or the router is not ready
-    if (loading || !router.isReady) return;
-
-    // if the user is not authorized, redirect to the login page
-    // with a return url to the current page
-    if (unAuthorized) {
-      void router.push({
-        pathname: "/",
-        query: { returnUrl: router.asPath },
-      });
-    }
+    if (loading || !router.isReady || isUserAlreadyOnConfPage) return;
 
     if (authorized && isUserHaveNoName) {
       void router.push({
@@ -45,12 +38,5 @@ export const Protected = ({ children }: Props): JSX.Element => {
     }
   }, [loading, unAuthorized, sessionStatus, router]);
 
-  // if the user refreshed the page or somehow navigated to the protected page
-  if (loading) {
-    return <LoadingPage />;
-  }
-
-  // if the user is authorized, render the page
-  // otherwise, render nothing while the router redirects him to the login page
-  return authorized ? <div>{children}</div> : <></>;
+  return <div>{children}</div>;
 };

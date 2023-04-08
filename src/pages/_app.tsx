@@ -7,6 +7,7 @@ import { api } from "../utils/api";
 
 import "../styles/globals.css";
 import { Protected } from "~/layouts/Protected";
+import { CompleteTheConfiguration } from "~/layouts/CompleteTheConfigurations";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -14,14 +15,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      {/* @ts-ignore */}
-      {Component.requireAuth ? (
-        <Protected>
+      <CompleteTheConfiguration>
+        {/* @ts-ignore */}
+        {Component.requireAuth ? (
+          <Protected>
+            <Component {...pageProps} />
+          </Protected>
+        ) : (
           <Component {...pageProps} />
-        </Protected>
-      ) : (
-        <Component {...pageProps} />
-      )}
+        )}
+      </CompleteTheConfiguration>
     </SessionProvider>
   );
 };

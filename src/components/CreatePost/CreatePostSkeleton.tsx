@@ -1,6 +1,6 @@
-import Avatar from "../Actions/Avatar";
+import Avatar from "../Global/Avatar";
 
-export const ComposeNewPostSkeleton = () => {
+export const CreatePostSkeleton = () => {
   return (
     <div className="layout mx-auto max-w-3xl">
       <div className="flex justify-between gap-5">

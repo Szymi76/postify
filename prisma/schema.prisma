@@ -52,6 +52,7 @@ model User {
     lastActive             DateTime?        @default(now())
     backgroundImage        String?
     description            String?          @default("Oto mój profil 🙂")
+    profileUrl             String?          
     accounts               Account[]
     sessions               Session[]
     senderFirendships      Friendship[]     @relation("senderFriendships")

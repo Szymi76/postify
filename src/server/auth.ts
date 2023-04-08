@@ -24,6 +24,7 @@ declare module "next-auth" {
       backgroundImage: string | null;
       emailVerified: Date | null;
       description: string | null;
+      profileUrl: string | null;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
@@ -38,6 +39,7 @@ declare module "next-auth" {
     lastActive: Date;
     backgroundImage: string | null;
     description: string | null;
+    profileUrl: string | null;
   }
 }
 

@@ -8,6 +8,21 @@ const config = {
           "'Poppins', sans-serif",
         ],
       },
+      keyframes: {
+        "scale-in": {
+          "0%": { transform: "scale(.5)" },
+          "100%": { transform: "scale(1)" },
+        }
+      },
+      animation: {
+        "scaling-in": "scale-in 100ms",
+      },
+      gridTemplateRows: {
+        "auto": "repeat(auto-fit, minmax(300px, 1fr))"
+      },
+      gridTemplateColumns: {
+        "auto": "repeat(auto-fit, minmax(300px, 1fr))"
+      }
     },
   },
   plugins: [require("daisyui")],

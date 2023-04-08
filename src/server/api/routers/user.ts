@@ -69,4 +69,36 @@ export const userRouter = createTRPCRouter({
 
       return notNullUsers;
     }),
+
+  getInfiniteUsersWithIds: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().nullish(), // <-- "cursor" needs to exist, but can be any type
+        ids: z.string().array(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      // const limit = input.limit ?? 50;
+      const { cursor } = input;
+      const items = await ctx.prisma.user.findMany({
+        take: input.limit + 1, // get an extra item at the end which we'll use as next cursor
+        where: {
+          id: { in: input.ids },
+        },
+        cursor: cursor ? { id: cursor } : undefined,
+        // orderBy: {
+        //   myCursor: 'asc',
+        // },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > input.limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.id;
+      }
+      return {
+        items,
+        nextCursor,
+      };
+    }),
 });

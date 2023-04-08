@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import Avatar from "~/components/Actions/Avatar";
+import Avatar from "~/components/Global/Avatar";
 
 export type ListOfUsersToTagProps = {
   users?: Partial<User>[];

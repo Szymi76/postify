@@ -1,4 +1,4 @@
-import Avatar from "~/components/Actions/Avatar";
+import Avatar from "~/components/Global/Avatar";
 import { api } from "~/utils/api";
 
 export type TaggedUsersPreviewProps = { taggedUsersIds: string[] };

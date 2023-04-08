@@ -125,10 +125,8 @@ export const postRouter = createTRPCRouter({
         where: { id: input.postId },
         include: {
           author: true,
-          comments: { include: { author: true } },
-          likes: { include: { user: true } },
-          bookmarked: { include: { user: true } },
-          seenBy: { include: { user: true } },
+          comments: { include: { author: true }, take: 3 },
+          likes: { include: { user: true }, take: 3 },
           taggedUsers: { include: { taggedUser: true } },
         },
       });
@@ -246,5 +244,16 @@ export const postRouter = createTRPCRouter({
           post: { connect: { id: input.postId } },
         },
       });
+    }),
+
+  // SPRAWDZA CZY PODANY POST JAKO ID ZNAJDUJE SIĘ ZAZNACZONYCH U AKTUALNIE ZALOGOWANEGO UŻYTKOWNIKA
+  isPostBookmarkedByCurrentUser: protectedProcedure
+    .input(z.object({ postId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const post = await ctx.prisma.bookmarked.findFirst({
+        where: { postId: input.postId, userId: ctx.session.user.id },
+      });
+      console.log(post);
+      return post;
     }),
 });
