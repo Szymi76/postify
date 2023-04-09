@@ -6,8 +6,9 @@ import { SessionProvider } from "next-auth/react";
 import { api } from "../utils/api";
 
 import "../styles/globals.css";
-import { Protected } from "~/layouts/Protected";
 import { CompleteTheConfiguration } from "~/layouts/CompleteTheConfigurations";
+import AlertWrapper from "~/layouts/AlertWrapper";
+import ComponentRequiredPropsHandler from "~/layouts/ComponentRequiredPropsHandler";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -16,14 +17,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <CompleteTheConfiguration>
-        {/* @ts-ignore */}
-        {Component.requireAuth ? (
-          <Protected>
-            <Component {...pageProps} />
-          </Protected>
-        ) : (
-          <Component {...pageProps} />
-        )}
+        <AlertWrapper>
+          <ComponentRequiredPropsHandler pageProps={pageProps} Component={Component} />
+        </AlertWrapper>
       </CompleteTheConfiguration>
     </SessionProvider>
   );

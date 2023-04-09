@@ -48,6 +48,18 @@
     @apply bg-white border-slate-300 rounded-lg
 }
 
+.alert {
+    @apply rounded-md p-2 sm:w-[275px] w-full text-sm flex justify-between flex-row items-center
+}
+
+.alert-info {
+    @apply bg-primary text-white
+}
+
+.alert > :not([hidden]) ~ :not([hidden]) {
+    @apply mt-0
+}
+
 @layer components {
     .layout {
         @apply border border-slate-200 rounded-lg bg-white p-5;

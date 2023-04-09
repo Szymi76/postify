@@ -6,9 +6,13 @@ import Content from "./Content";
 import ActionButtons from "./ActionButtons";
 import LikesDetails from "./LikesDetails";
 import Comments from "./Comments";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { PAGES } from "~/constants";
 
 type PostProps = { id: string; fullSection: boolean };
 const Post = (props: PostProps) => {
+  const currentUser = useSession().data?.user;
   const { data: post, isLoading, refetch } = api.post.getPostById.useQuery({ postId: props.id });
 
   if (isLoading) return <PostSkeleton />;
@@ -20,12 +24,23 @@ const Post = (props: PostProps) => {
   const usersWhoLiked = post?.likes.map((like) => like.user) ?? [];
 
   return (
-    <div className="layout flex w-[750px] max-w-[95%] flex-col gap-5">
+    <div className="layout flex w-[95%] max-w-3xl flex-col gap-5">
       <Header post={post} refetch={() => void refetch()} />
       <Content post={post} />
-      <ActionButtons post={post ?? null} refetch={() => void refetch()} />
-      <LikesDetails users={usersWhoLiked} />
-      <Comments fullSection={props.fullSection} post={post} refetch={() => void refetch()} />
+      {currentUser ? (
+        <>
+          <ActionButtons post={post ?? null} refetch={() => void refetch()} />
+          <LikesDetails users={usersWhoLiked} />
+          <Comments fullSection={props.fullSection} post={post} refetch={() => void refetch()} />
+        </>
+      ) : (
+        <p className="font-medium">
+          <Link href={PAGES.SINGIN} className="link-primary link">
+            Zaloguj się
+          </Link>
+          , aby polubić, zaznaczyć czy skomentować post.
+        </p>
+      )}
     </div>
   );
 };

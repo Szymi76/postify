@@ -4,6 +4,7 @@ import { Avatar, Modal } from "../../Global";
 import Link from "next/link";
 import LikesDetailText from "./LikesDetailText";
 import ModalUsersList from "./ModaUsersList";
+import { PAGES } from "~/constants";
 
 type LikesDetailsProps = { users: User[] };
 const LikesDetails = (props: LikesDetailsProps) => {
@@ -21,7 +22,7 @@ const LikesDetails = (props: LikesDetailsProps) => {
           return (
             <Link
               key={user.id}
-              href={`profile/${user.id}`}
+              href={PAGES.PROFILE(user.id)}
               className="mr-2 flex items-center duration-100 hover:scale-95"
             >
               <Avatar src={user.image} text={user.name} size="8" />

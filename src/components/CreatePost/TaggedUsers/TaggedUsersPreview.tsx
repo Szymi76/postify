@@ -9,7 +9,7 @@ export const TaggedUsersPreview = (props: TaggedUsersPreviewProps) => {
 
   return (
     <div className="flex justify-end">
-      <div className="max-w-xl flex-wrap gap-1 rounded-md  bg-slate-200 p-2">
+      <div className="flex max-w-xl flex-wrap gap-2 rounded-md bg-slate-200 p-2">
         {users.map((user) => {
           return (
             <div

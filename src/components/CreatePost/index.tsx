@@ -52,11 +52,11 @@ export const ComposeNewPost = () => {
 
   const isPostEmpty = !Boolean(text || images.length > 0);
   const currentUser = session!.user;
-  const isImagesArrayNotEmpty = images.length == 0;
-  const isTaggedUsersIdsArrayNotEmpty = taggedUsersIds.length == 0;
+  const isImagesArrayNotEmpty = images.length > 0;
+  const isTaggedUsersIdsArrayNotEmpty = taggedUsersIds.length > 0;
 
   return (
-    <div className="layout mx-auto max-w-3xl ">
+    <div className="layout mx-auto w-[95%] max-w-3xl">
       {/* AVATAR I POLE TEKSTOWE */}
       <div className="flex justify-between gap-5">
         <Avatar src={currentUser.image} />

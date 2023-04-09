@@ -1,7 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import LoadingPage from "./LoadingPage";
 
 type Props = {
   children: React.ReactElement;

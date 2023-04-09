@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { Avatar } from "~/components/Global";
+import { PAGES } from "~/constants";
 import { api } from "~/utils/api";
 
 type ModalUsersListProps = { usersIds: string[] };
@@ -24,7 +25,7 @@ const ModalUsersList = (props: ModalUsersListProps) => {
       {users.map((user) => {
         return (
           <Link
-            href={`profile/${user.id}`}
+            href={PAGES.PROFILE(user.id)}
             key={user.id}
             className="mx-1 flex items-center gap-2 border-b border-slate-200 p-3 hover:bg-gray-100"
           >

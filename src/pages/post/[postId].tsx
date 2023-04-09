@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import Post from "~/components/Post";
+import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
 import { api } from "~/utils/api";
 
 const Page = () => {
@@ -11,10 +12,17 @@ const Page = () => {
   if (typeof postId != "string") return <h1>Post nie istnieje</h1>;
 
   return (
-    <div className="mt-20 flex w-full justify-center">
+    <div className="mt-20 flex w-full flex-col items-center justify-center gap-1">
       <Post id={postId} fullSection={true} />
     </div>
   );
 };
 
+const requiredPageProps: PageComponentRequiredProps = {
+  auth: "for-all",
+  header: "include",
+  footer: "include",
+};
+
+Page.requiredPageProps = requiredPageProps;
 export default Page;

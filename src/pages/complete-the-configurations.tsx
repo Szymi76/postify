@@ -3,6 +3,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { FileInput, LoadingButton } from "~/components/Global";
+import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
 import { api } from "~/utils/api";
 import { uploadFile } from "~/utils/other";
 
@@ -108,4 +109,9 @@ const CompleteTheConfiguration = () => {
   );
 };
 
+const requiredPageProps: PageComponentRequiredProps = {
+  auth: "only-authenticated",
+};
+
+CompleteTheConfiguration.requiredPageProps = requiredPageProps;
 export default CompleteTheConfiguration;

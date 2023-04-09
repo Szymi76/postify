@@ -1,54 +1,40 @@
-// "use client";
-
-import { NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
-import React, { useState } from "react";
-
+import React, { useCallback } from "react";
+import { ComposeNewPost } from "~/components/CreatePost";
+import Post from "~/components/Post";
+import { useOnEndOfWindowScroll } from "~/hooks/useOnEndOfWindowScroll";
+import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
 import { api } from "~/utils/api";
 
-import { UploadClient } from "@uploadcare/upload-client";
+const Home = () => {
+  const { data, fetchNextPage, isLoading, isFetching } =
+    api.post.getInfiniteLatestsPostsIds.useInfiniteQuery(
+      { limit: 3 },
+      { getNextPageParam: (lastPage) => lastPage.nextCursor }
+    );
 
-const client = new UploadClient({ publicKey: "736e960af151c369236f" });
+  const fetchMorePosts = () => !isFetching && void fetchNextPage();
+  useOnEndOfWindowScroll(fetchMorePosts, 50, [isFetching]);
 
-const Home: NextPage = () => {
-  const [image, setImage] = useState<File | null>(null);
-
-  const { data: users } = api.users.getAll.useQuery();
-
-  const { mutate } = api.friendship.send.useMutation();
-
-  const { data: session } = useSession();
-
-  const handleUploadFile = async () => {
-    if (!image) throw new Error("No files to upload!");
-
-    const { cdnUrl } = await client.uploadFile(image);
-    console.log("URL:", cdnUrl);
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length == 0) throw new Error("No files!");
-
-    const newImage = files[0]!;
-
-    setImage(newImage);
-  };
+  const postsIds = data?.pages.map((page) => page.items.map((item) => item.id)).flat();
 
   return (
-    <div>
-      <button className="btn" onClick={() => void signIn()}>
-        Zaloguj się
-      </button>
-      <button className="btn" onClick={() => void signOut()}>
-        Wyloguj się
-      </button>
-      {session ? session.user.name : "BRAK SESSI"}
-      {session && session.user.id}
-      <input type="file" multiple={false} onChange={handleImageChange} />
-      <button onClick={() => void handleUploadFile()}>Upload</button>
+    <div className="flex justify-center pt-10">
+      <div className="flex flex-col items-center gap-10">
+        <ComposeNewPost />
+        {postsIds ? (
+          postsIds.map((postId) => <Post key={postId} id={postId} fullSection={false} />)
+        ) : (
+          <h1>Błąd podczas ładowania postów</h1>
+        )}
+      </div>
     </div>
   );
 };
 
+const requiredPageProps: PageComponentRequiredProps = {
+  auth: "for-all",
+  header: "include",
+};
+
+Home.requiredPageProps = requiredPageProps;
 export default Home;

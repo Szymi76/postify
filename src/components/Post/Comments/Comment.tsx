@@ -7,13 +7,16 @@ import { timeFromNow } from "~/utils/other";
 import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
+import { PAGES } from "~/constants";
+import { useAlert } from "~/store";
 
 type CommentProps = {
   comment: Comment & { author: User };
-  refetch: () => void;
+  refetchComments: () => void;
 };
 const Comment = (props: CommentProps) => {
   const currentUser = useSession().data?.user;
+  const pushAlert = useAlert((state) => state.pushAlert);
   const [ref, isHovering] = useHover<HTMLDivElement>();
   const { mutateAsync: deleteComment } = api.comment.delete.useMutation();
 
@@ -21,13 +24,14 @@ const Comment = (props: CommentProps) => {
 
   const handleDeleteComment = async () => {
     await deleteComment({ commentId: props.comment.id });
-    props.refetch();
+    props.refetchComments();
+    pushAlert({ text: "Komentarz został usunięty", type: "info" });
   };
 
   return (
     <div ref={ref} className="flex justify-between py-1">
       <p>
-        <Link href={`profile/${props.comment.author.id}`}>
+        <Link href={PAGES.PROFILE(props.comment.author.id)}>
           <b className="mr-2">{props.comment.author.name}</b>
         </Link>
         {props.comment.text}

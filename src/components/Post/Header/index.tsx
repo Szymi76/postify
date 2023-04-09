@@ -4,6 +4,8 @@ import EllipsisHorizontalIcon from "@heroicons/react/24/outline/EllipsisHorizont
 import { Avatar } from "~/components/Global";
 import { timeFromNow } from "~/utils/other";
 import Dropdown from "./Dropdown";
+import Link from "next/link";
+import { PAGES } from "~/constants";
 
 type HeaderProps = { post: RouterOutputs["post"]["getPostById"]; refetch: () => void };
 const Header = (props: HeaderProps) => {
@@ -15,9 +17,11 @@ const Header = (props: HeaderProps) => {
   return (
     <div className="flex justify-between">
       <div className="flex gap-3">
-        <Avatar src={post?.author.image} text={post?.author.name} />
+        <Avatar src={post.author.image} text={post.author.name} />
         <div>
-          <h3 className="font-semibold">{post?.author.name}</h3>
+          <Link href={PAGES.PROFILE(post.author.id)}>
+            <h3 className="font-semibold">{post?.author.name}</h3>
+          </Link>
           <p className="text-sm text-gray-500">{timeFromNow(post.createdAt)}</p>
         </div>
       </div>

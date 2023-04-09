@@ -1,9 +1,7 @@
 import { createTRPCRouter } from "../../server/api/trpc";
 import { friendshipRouter } from "../../server/api/routers/friendship";
-import { usersRouter } from "../../server/api/routers/users";
 import { notificationRouter } from "./routers/notification";
 import { userRouter } from "./routers/user";
-import { otherRouter } from "./routers/other";
 import { postRouter } from "./routers/post";
 import { commentRouter } from "./routers/comment";
 import { communityRouter } from "./routers/community";
@@ -15,10 +13,8 @@ import { communityRouter } from "./routers/community";
  */
 export const appRouter = createTRPCRouter({
   friendship: friendshipRouter,
-  users: usersRouter,
   notification: notificationRouter,
   user: userRouter,
-  other: otherRouter,
   post: postRouter,
   comment: commentRouter,
   community: communityRouter,

@@ -12,10 +12,20 @@ const config = {
         "scale-in": {
           "0%": { transform: "scale(.5)" },
           "100%": { transform: "scale(1)" },
+        },
+        "slide-in-from-right": {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0%)" },
+        },
+        "slide-in-to-right": {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(100%)" },
         }
       },
       animation: {
         "scaling-in": "scale-in 100ms",
+        "sliding-in-from-right": "slide-in-from-right 100ms",
+        "sliding-in-to-right": "slide-in-to-right 100ms forwards",
       },
       gridTemplateRows: {
         "auto": "repeat(auto-fit, minmax(300px, 1fr))"
