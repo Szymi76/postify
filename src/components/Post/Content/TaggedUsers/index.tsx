@@ -6,10 +6,10 @@ import SingleTaggedUser from "./SingleTaggedUser";
 type TaggedUsersProps = { users: User[] };
 const TaggedUsers = (props: TaggedUsersProps) => {
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-start gap-1">
       <UserGroupIcon className="h-7" />
       <h4 className="font-semibold">Oznaczeni</h4>
-      <div className="ml-2 flex gap-1">
+      <div className="ml-2 flex flex-wrap items-end gap-1">
         {props.users.map((user, index) => (
           <SingleTaggedUser
             key={user.id}

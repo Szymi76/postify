@@ -20,12 +20,17 @@ const config = {
         "slide-in-to-right": {
           "0%": { transform: "translateX(0%)" },
           "100%": { transform: "translateX(100%)" },
+        },
+        "height-from-top": {
+          "0%": { height: "0px" },
+          "100%": { height: "100%" },
         }
       },
       animation: {
         "scaling-in": "scale-in 100ms",
         "sliding-in-from-right": "slide-in-from-right 100ms",
         "sliding-in-to-right": "slide-in-to-right 100ms forwards",
+        "height-from-top": "height-from-top 300ms",
       },
       gridTemplateRows: {
         "auto": "repeat(auto-fit, minmax(300px, 1fr))"

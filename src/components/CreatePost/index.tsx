@@ -12,7 +12,7 @@ import { TagUsersActionButton } from "./ActionButtons/TagUsersActionButtonProps"
 import HiddenTooltip from "./HiddenTooltip";
 import { LoadingButton } from "../Global";
 
-export const ComposeNewPost = () => {
+const CreatePost = () => {
   const { status, data: session } = useSession();
   const { mutateAsync: createNewPost } = api.post.add.useMutation();
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +56,7 @@ export const ComposeNewPost = () => {
   const isTaggedUsersIdsArrayNotEmpty = taggedUsersIds.length > 0;
 
   return (
-    <div className="layout mx-auto w-[95%] max-w-3xl">
+    <div className="layout w-full">
       {/* AVATAR I POLE TEKSTOWE */}
       <div className="flex justify-between gap-5">
         <Avatar src={currentUser.image} />
@@ -112,3 +112,5 @@ export const ComposeNewPost = () => {
     </div>
   );
 };
+
+export default CreatePost;

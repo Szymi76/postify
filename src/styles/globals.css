@@ -64,6 +64,9 @@
     .layout {
         @apply border border-slate-200 rounded-lg bg-white p-5;
     }
+    .content-wrapper {
+        @apply max-w-3xl w-[95%] mx-auto 
+    }
     .btn-action {
         @apply btn-outline btn-sm btn relative gap-2 text-xs;
     }

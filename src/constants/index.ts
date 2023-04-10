@@ -6,3 +6,4 @@ export const PAGES = {
 };
 
 export const HEADER_HEIGHT = 56;
+export const PAGE_PADDING_TOP_CLASS_NAME_WITH_HEADER = "pt-[56px]";

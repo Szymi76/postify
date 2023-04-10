@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
-import { ComposeNewPost } from "~/components/CreatePost";
+import CreatePost from "~/components/CreatePost";
 import Post from "~/components/Post";
+import PostSkeleton from "~/components/Post/PostSkeleton";
 import { useOnEndOfWindowScroll } from "~/hooks/useOnEndOfWindowScroll";
 import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
 import { api } from "~/utils/api";
@@ -18,13 +19,16 @@ const Home = () => {
   const postsIds = data?.pages.map((page) => page.items.map((item) => item.id)).flat();
 
   return (
-    <div className="flex justify-center pt-10">
+    <div className="content-wrapper pt-10">
       <div className="flex flex-col items-center gap-10">
-        <ComposeNewPost />
+        <CreatePost />
         {postsIds ? (
           postsIds.map((postId) => <Post key={postId} id={postId} fullSection={false} />)
         ) : (
-          <h1>Błąd podczas ładowania postów</h1>
+          <>
+            <PostSkeleton />
+            <PostSkeleton />
+          </>
         )}
       </div>
     </div>

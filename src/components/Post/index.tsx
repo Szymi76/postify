@@ -24,7 +24,7 @@ const Post = (props: PostProps) => {
   const usersWhoLiked = post?.likes.map((like) => like.user) ?? [];
 
   return (
-    <div className="layout flex w-[95%] max-w-3xl flex-col gap-5">
+    <div className="layout flex w-full flex-col gap-5">
       <Header post={post} refetch={() => void refetch()} />
       <Content post={post} />
       {currentUser ? (

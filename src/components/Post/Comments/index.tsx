@@ -79,6 +79,7 @@ const Comments = (props: CommentsProps) => {
           <Link href={PAGES.POST(post.id)} className="hover:underline">
             Pokaż więcej komentrzy
           </Link>
+          /
           <Link href={PAGES.POST(post.id)} className="hover:underline">
             Skomentuj
           </Link>

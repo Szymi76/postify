@@ -24,7 +24,10 @@ export type AlertState = {
 };
 
 export const useAlert = create<AlertState>((set, get) => ({
+  // TABLICA WSZYSTKICH ALERTÓW
   alerts: [],
+
+  // METODA DO DODAWANIA NOWEGO ALERTU
   pushAlert: (required, options) => {
     const { text, type } = required;
     const timeout = options?.timeout ?? DEFAULT_ALERT_TIMEOUT;
@@ -41,6 +44,8 @@ export const useAlert = create<AlertState>((set, get) => ({
 
     return { id };
   },
+
+  // CZYSZCZENIE WSZYSTKICH ALERTÓW
   clearAllAlerts: () => {
     set(
       produce<AlertState>((state) => {
@@ -48,6 +53,8 @@ export const useAlert = create<AlertState>((set, get) => ({
       })
     );
   },
+
+  // USUWANIE ALERTU PO ID
   deleteAlert: (id) => {
     set(
       produce<AlertState>((state) => {

@@ -253,7 +253,6 @@ export const postRouter = createTRPCRouter({
       const post = await ctx.prisma.bookmarked.findFirst({
         where: { postId: input.postId, userId: ctx.session.user.id },
       });
-      console.log(post);
       return post;
     }),
 

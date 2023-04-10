@@ -1,9 +1,8 @@
 import React from "react";
-import { Avatar } from "../Global";
 
 const PostSkeleton = () => {
   return (
-    <div className="flex w-[750px] max-w-[95%] animate-pulse flex-col gap-5 rounded-md bg-white p-3">
+    <div className="flex w-full animate-pulse flex-col gap-5 rounded-md bg-white p-3">
       {/* HEADER */}
       <div className="flex gap-2">
         <div className="placeholder avatar">

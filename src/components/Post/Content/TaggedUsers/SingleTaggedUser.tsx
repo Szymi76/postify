@@ -15,11 +15,14 @@ const SingleTaggedUser = (props: SingleTaggedUserProps) => {
   return (
     <div className="relative flex">
       <Link href={`/profile/${props.user.id}`}>
-        <p className="cursor-pointer text-primary hover:underline" ref={triggerRef}>
+        <p
+          className="cursor-pointer whitespace-nowrap text-primary hover:underline"
+          ref={triggerRef}
+        >
           {props.user.name}
         </p>
       </Link>
-      <div ref={elementRef} className="absolute top-6">
+      <div ref={elementRef} className="absolute top-6 z-20">
         {show && <UserDetails user={props.user} />}
       </div>
       {!props.isLastInList && <p className="px-1">•</p>}

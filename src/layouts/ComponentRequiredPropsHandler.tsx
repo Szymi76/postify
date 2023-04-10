@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { TailSpin } from "react-loader-spinner";
 import Header from "~/components/Header";
-import { HEADER_HEIGHT, PAGES } from "~/constants";
+import { HEADER_HEIGHT, PAGES, PAGE_PADDING_TOP_CLASS_NAME_WITH_HEADER } from "~/constants";
 
 export type PageComponentRequiredProps = {
   header?: "include";
@@ -41,7 +41,7 @@ const ComponentRequiredPropsHandler = (props: ComponentRequiredPropsHandlerProps
   if (status == "loading") return <LoadingPage />;
   if (redirectCurrentUserToHomePage || redirectCurrentUserToSigninPage) return <LoadingPage />;
 
-  const paddingTop = includeHeader ? `pt-[${HEADER_HEIGHT}px]` : "pt-0";
+  const paddingTop = includeHeader ? PAGE_PADDING_TOP_CLASS_NAME_WITH_HEADER : "pt-0";
 
   return (
     <div className={`${paddingTop} bg-slate-100 pb-5`}>

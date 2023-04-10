@@ -1,19 +1,19 @@
 import { useRouter } from "next/router";
-import React from "react";
-import Post from "~/components/Post";
+import React, { useRef } from "react";
+import { Dropdown, useDropdown } from "~/hooks/useDropdown";
+import Profile from "~/components/Profile";
 import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
-import { api } from "~/utils/api";
 
 const Page = () => {
   const router = useRouter();
   const { query } = router;
-  const postId = typeof query.postId == "string" ? query.postId : null;
+  const userId = typeof query.userId == "string" ? query.userId : null;
 
-  if (typeof postId != "string") return <h1>Post nie istnieje</h1>;
+  if (typeof userId != "string") return <h1>Użytkownik nie istnieje</h1>;
 
   return (
     <div className="content-wrapper pt-10">
-      <Post id={postId} fullSection={true} />
+      <Profile userId={userId} />
     </div>
   );
 };

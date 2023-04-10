@@ -1,5 +1,5 @@
 import { Friendship, User } from "@prisma/client";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { noti } from "../../../utils/other";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../../../server/api/trpc";
@@ -155,5 +155,25 @@ export const friendshipRouter = createTRPCRouter({
         sender: User;
         receiver: User;
       })[];
+    }),
+
+  // status znajomości z danych użytkownikiem
+  getFriendshipWithUser: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const currentUserId = ctx.session.user.id;
+      const otherUserId = input.userId;
+
+      const friendship = await ctx.prisma.friendship.findFirst({
+        where: {
+          OR: [
+            { senderId: currentUserId, receiverId: otherUserId },
+            { senderId: otherUserId, receiverId: currentUserId },
+          ],
+        },
+        include: { receiver: true, sender: true },
+      });
+
+      return friendship;
     }),
 });
