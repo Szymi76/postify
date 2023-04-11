@@ -4,15 +4,16 @@ import { api } from "~/utils/api";
 
 const GotFriendRequestButton = (props: ButtonBasedOnFriendshipStatusProps) => {
   const { mutateAsync: responseToFriendRequest } = api.friendship.response.useMutation();
+  const utils = api.useContext();
 
   const handleAcceptingFriendRequest = async () => {
     await responseToFriendRequest({ friendshipId: props.friendshipId, action: "accept" });
-    props.refetch();
+    await utils.friendship.getFriendshipWithUser.refetch({ userId: props.otherUserId });
   };
 
   const handleRejectingFriendRequest = async () => {
     await responseToFriendRequest({ friendshipId: props.friendshipId, action: "reject" });
-    props.refetch();
+    await utils.friendship.getFriendshipWithUser.refetch({ userId: props.otherUserId });
   };
 
   return (

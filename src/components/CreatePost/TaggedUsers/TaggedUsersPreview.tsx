@@ -16,7 +16,7 @@ export const TaggedUsersPreview = (props: TaggedUsersPreviewProps) => {
               key={user.id}
               className="flex w-min items-center gap-2 whitespace-nowrap rounded-lg bg-slate-300 p-1"
             >
-              <Avatar src={user?.image} text={user.name} size="8" />
+              <Avatar src={user?.image} placeholderText={user.name} size="small" />
               <p className="text-sm font-medium text-gray-600">{user.name}</p>
             </div>
           );

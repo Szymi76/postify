@@ -29,9 +29,9 @@ const Post = (props: PostProps) => {
       <Content post={post} />
       {currentUser ? (
         <>
-          <ActionButtons post={post ?? null} refetch={() => void refetch()} />
+          <ActionButtons post={post} />
           <LikesDetails users={usersWhoLiked} />
-          <Comments fullSection={props.fullSection} post={post} refetch={() => void refetch()} />
+          <Comments fullSection={props.fullSection} post={post} />
         </>
       ) : (
         <p className="font-medium">

@@ -1,20 +1,25 @@
 import React from "react";
 
-export type AvatarProps = {
+type AvatarProps = {
   src?: string | null;
-  text?: string | null;
-  size?: string;
-  textLimit?: number;
+  placeholderText?: string | null;
+  className?: string;
+  size?: number | "small" | "medium" | "large";
 };
-export const Avatar = (props: AvatarProps) => {
-  const sizeClassNames = props.size ? `w-${props.size} h-${props.size}` : "w-12 h-12";
+const Avatar = (props: AvatarProps) => {
+  let size = `${props.size ?? 48}px`;
+  if (size.includes("small")) size = `${28}px`;
+  if (size.includes("medium")) size = `${48}px`;
+  if (size.includes("large")) size = `${85}px`;
 
-  const text = props.text?.slice(0, props.textLimit ? props.textLimit : 1);
+  const sizeStyles = { height: size, width: size };
+  const className = props.className ?? "";
+  const placeholderText = props.placeholderText?.substring(0, 2);
 
   if (props.src) {
     return (
-      <div className="avatar">
-        <div className={`${sizeClassNames} rounded-full bg-slate-200`}>
+      <div className={`avatar`}>
+        <div className={`rounded-full bg-slate-200 ${className}`} style={sizeStyles}>
           <img src={props.src} />
         </div>
       </div>
@@ -22,9 +27,9 @@ export const Avatar = (props: AvatarProps) => {
   }
 
   return (
-    <div className="placeholder avatar">
-      <div className={`${sizeClassNames} rounded-full bg-slate-200`}>
-        <span className="text-xl">{text}</span>
+    <div className={`placeholder avatar`}>
+      <div className={`rounded-full bg-slate-200 ${className}`} style={sizeStyles}>
+        <span className="text-xl">{placeholderText}</span>
       </div>
     </div>
   );

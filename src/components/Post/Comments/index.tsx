@@ -6,22 +6,17 @@ import Link from "next/link";
 import { PAGES } from "~/constants";
 import { useSession } from "next-auth/react";
 
-type CommentsProps = {
-  fullSection: boolean;
-  post: RouterOutputs["post"]["getPostById"];
-  refetch: () => void;
-};
-
+type CommentsProps = { fullSection: boolean; post: RouterOutputs["post"]["getPostById"] };
 const Comments = (props: CommentsProps) => {
+  const post = props.post!;
   const [hideComments, setHideComments] = useState(false);
   const currentUser = useSession().data?.user;
   const { data, fetchNextPage, hasNextPage, refetch } =
     api.comment.getInfiniteComments.useInfiniteQuery(
-      { limit: 5, postId: props.post!.id },
+      { limit: 5, postId: post.id },
       { getNextPageParam: (lastPage) => lastPage.nextCursor }
     );
 
-  const post = props.post!;
   const comments = data?.pages.map((page) => page.items).flat() ?? [];
   const alignHideShowTextEnd = hideComments || !hasNextPage;
 
@@ -35,22 +30,16 @@ const Comments = (props: CommentsProps) => {
       )}
       <div>
         {/* [BRAK PEŁNEJ SEKCJI] PIERWSZY KOMENTARZ */}
-        {!props.fullSection && comments[0] && (
-          <SingleComment comment={comments[0]} refetchComments={() => void refetch()} />
-        )}
+        {!props.fullSection && comments[0] && <SingleComment comment={comments[0]} />}
 
         {/* [PEŁNA SEKCJA] LISTA WSZYTSKICH ZAŁADOWANYCH KOMENTARZY */}
-        {props.fullSection &&
-          !hideComments &&
-          comments.map((comment) => {
-            return (
-              <SingleComment
-                key={comment.id}
-                comment={comment}
-                refetchComments={() => void refetch()}
-              />
-            );
-          })}
+        <div id="see-comments">
+          {props.fullSection &&
+            !hideComments &&
+            comments.map((comment) => {
+              return <SingleComment key={comment.id} comment={comment} />;
+            })}
+        </div>
 
         <div className={`mt-2 flex ${alignHideShowTextEnd ? "justify-end" : "justify-between"}`}>
           {/* [PEŁNA SEKCJA] TEXT DO ZAŁADOWANIA KOLEJNYCH KOMENTARZY */}
@@ -69,18 +58,16 @@ const Comments = (props: CommentsProps) => {
       </div>
 
       {/* [PEŁNA SEKCJA] KOMPONENT DO TWORZNIA NOWEGO KOMENTARZA */}
-      {props.fullSection && currentUser && (
-        <WriteComment postId={post.id} refetch={() => void refetch()} />
-      )}
+      {props.fullSection && currentUser && <WriteComment postId={post.id} />}
 
       {/* [BRAK PEŁNEJ SEKCJI] LINK DO PEŁNEGO POSTA */}
       {!props.fullSection && (
         <div className="mt-2 flex gap-1 text-sm text-primary">
-          <Link href={PAGES.POST(post.id)} className="hover:underline">
+          <Link href={PAGES.POST(`${post.id}#see-comments`)} className="hover:underline">
             Pokaż więcej komentrzy
           </Link>
           /
-          <Link href={PAGES.POST(post.id)} className="hover:underline">
+          <Link href={PAGES.POST(`${post.id}#write-comment`)} className="hover:underline">
             Skomentuj
           </Link>
         </div>

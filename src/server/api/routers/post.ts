@@ -250,10 +250,19 @@ export const postRouter = createTRPCRouter({
   isPostBookmarkedByCurrentUser: protectedProcedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ ctx, input }) => {
-      const post = await ctx.prisma.bookmarked.findFirst({
+      const bookmark = await ctx.prisma.bookmarked.findFirst({
         where: { postId: input.postId, userId: ctx.session.user.id },
       });
-      return post;
+      return bookmark;
+    }),
+
+  isPostLikedByCurrentUser: protectedProcedure
+    .input(z.object({ postId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const like = await ctx.prisma.like.findFirst({
+        where: { postId: input.postId, userId: ctx.session.user.id },
+      });
+      return like;
     }),
 
   getInfiniteLatestsPostsIds: publicProcedure

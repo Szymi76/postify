@@ -29,7 +29,7 @@ const ModalUsersList = (props: ModalUsersListProps) => {
             key={user.id}
             className="mx-1 flex items-center gap-2 border-b border-slate-200 p-3 hover:bg-gray-100"
           >
-            <Avatar src={user.image} text={user.name} size="10" />
+            <Avatar src={user.image} placeholderText={user.name} size={40} />
             <h4 className="text-md font-medium">{user.name}</h4>
           </Link>
         );

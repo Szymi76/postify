@@ -45,11 +45,11 @@ Dropdown.displayName = "Dropdown";
 type HTMLDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 type DropdownItemProps = HTMLDivProps & { contentClassName?: string };
-export const DropdownItem = (props: DropdownItemProps) => {
+export const DropdownItem = forwardRef<HTMLDivElement, DropdownItemProps>((props, ref) => {
   const { contentClassName, className, ...dropdownItemProps } = props;
 
   return (
-    <div className={`dropdown-secondary-item ${className ?? ""}`} {...dropdownItemProps}>
+    <div ref={ref} className={`dropdown-secondary-item ${className ?? ""}`} {...dropdownItemProps}>
       <div
         className={`dropdown-secondary-item-content whitespace-nowrap text-sm font-medium ${
           contentClassName ?? ""
@@ -59,4 +59,6 @@ export const DropdownItem = (props: DropdownItemProps) => {
       </div>
     </div>
   );
-};
+});
+
+DropdownItem.displayName = "DropdownItem";

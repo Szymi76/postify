@@ -17,7 +17,7 @@ const UserAvatar = () => {
         className="flex cursor-pointer items-center rounded-full border-2 border-transparent duration-100 hover:border-secondary hover:brightness-95 active:scale-90"
         onClick={() => setShow(!show)}
       >
-        <Avatar src={currentUser.image} text={currentUser.name} size="12" />
+        <Avatar src={currentUser.image} placeholderText={currentUser.name} />
       </div>
       {show && <PopoutMenu ref={popoutMenuRef} user={currentUser} />}
     </div>

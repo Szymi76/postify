@@ -3,7 +3,6 @@ import * as trpcNext from "@trpc/server/adapters/next";
 import { NodeHTTPCreateContextFnOptions } from "@trpc/server/adapters/node-http";
 import { IncomingMessage } from "http";
 import { getSession } from "next-auth/react";
-import ws from "ws";
 import { prisma } from "../db";
 
 /**

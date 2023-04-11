@@ -22,7 +22,7 @@ export type FriendshipStatus =
 type FriendshipButtonProps = { userId: string };
 const FriendshipButton = (props: FriendshipButtonProps) => {
   const currentUser = useSession().data?.user;
-  const { data: friendship, refetch } = api.friendship.getFriendshipWithUser.useQuery({
+  const { data: friendship } = api.friendship.getFriendshipWithUser.useQuery({
     userId: props.userId,
   });
 
@@ -31,13 +31,14 @@ const FriendshipButton = (props: FriendshipButtonProps) => {
   const friendshipStatus = getFriendshipStatus(currentUser.id, friendship ?? null);
 
   return (
-    <ButtonBasedOnFriendshipStatus
-      currentUserId={currentUser.id}
-      otherUserId={props.userId}
-      friendshipId={friendship?.id ?? ""}
-      friendshipStatus={friendshipStatus}
-      refetch={() => void refetch()}
-    />
+    <div className="pt-5">
+      <ButtonBasedOnFriendshipStatus
+        currentUserId={currentUser.id}
+        otherUserId={props.userId}
+        friendshipId={friendship?.id ?? ""}
+        friendshipStatus={friendshipStatus}
+      />
+    </div>
   );
 };
 

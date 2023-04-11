@@ -22,7 +22,7 @@ const FileInput = (props: FileInputProps) => {
 
   return (
     <div className="flex items-center gap-3">
-      <Avatar text={props.avatarText} src={avatarUrl()} size="12" />
+      <Avatar placeholderText={props.avatarText} src={avatarUrl()} />
       <div className="relative">
         <input
           type="file"

@@ -4,7 +4,7 @@ import FriendshipButton from "./Buttons/FriendshipButton";
 type ActionButtonsProps = { userId: string };
 const ActionButtons = (props: ActionButtonsProps) => {
   return (
-    <div className="flex flex-wrap gap-1 pt-3">
+    <div className="flex flex-wrap gap-1">
       <FriendshipButton userId={props.userId} />
     </div>
   );

@@ -5,6 +5,8 @@ import SingleTaggedUser from "./SingleTaggedUser";
 
 type TaggedUsersProps = { users: User[] };
 const TaggedUsers = (props: TaggedUsersProps) => {
+  if (props.users.length == 0) return <></>;
+
   return (
     <div className="flex items-start gap-1">
       <UserGroupIcon className="h-7" />

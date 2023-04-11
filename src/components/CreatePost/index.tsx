@@ -19,6 +19,7 @@ const CreatePost = () => {
   const [text, setText] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [taggedUsersIds, setTaggedUsersIds] = useState<string[]>([]);
+  const utils = api.useContext();
 
   if (status == "loading") return <CreatePostSkeleton />;
   if (status == "unauthenticated") return <></>;
@@ -43,9 +44,10 @@ const CreatePost = () => {
       const urls = (await Promise.all(imagesPromises)) as string[];
       await createNewPost({ text, images: urls, taggedUsersIds });
       clearStates();
-      setIsLoading(false);
+      await utils.post.getInfiniteLatestsPostsIds.refetch({ limit: 3 });
     } catch (err) {
       console.warn("Nie udało się opublikować postu.");
+    } finally {
       setIsLoading(false);
     }
   };

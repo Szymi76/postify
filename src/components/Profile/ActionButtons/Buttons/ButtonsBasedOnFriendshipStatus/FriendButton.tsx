@@ -4,10 +4,11 @@ import { api } from "~/utils/api";
 
 const FriendButton = (props: ButtonBasedOnFriendshipStatusProps) => {
   const { mutateAsync: removeFriend } = api.friendship.remove.useMutation();
+  const utils = api.useContext();
 
   const handleClick = async () => {
     await removeFriend({ friendshipId: props.friendshipId });
-    props.refetch();
+    await utils.friendship.getFriendshipWithUser.refetch({ userId: props.otherUserId });
   };
 
   return (

@@ -9,7 +9,6 @@ export type ButtonBasedOnFriendshipStatusProps = {
   currentUserId: string;
   otherUserId: string;
   friendshipId: string;
-  refetch: () => void;
 };
 
 type ButtonsBasedOnFriendshipStatusProps = ButtonBasedOnFriendshipStatusProps & {
@@ -20,7 +19,6 @@ const ButtonBasedOnFriendshipStatus = (props: ButtonsBasedOnFriendshipStatusProp
     currentUserId: props.currentUserId,
     otherUserId: props.otherUserId,
     friendshipId: props.friendshipId,
-    refetch: props.refetch,
   };
 
   switch (props.friendshipStatus) {

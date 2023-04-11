@@ -49,11 +49,7 @@ type ModalTitleProps = H2HTMLProps;
 export const ModalTitle = (props: ModalTitleProps) => {
   const { className, ...modalTitleProps } = props;
 
-  return (
-    <h2 className={`text-xl font-medium ${className ?? ""}`} {...modalTitleProps}>
-      Czy na pewno chcesz usunąć ten post?
-    </h2>
-  );
+  return <h2 className={`text-xl font-medium ${className ?? ""}`} {...modalTitleProps}></h2>;
 };
 
 type ModalContentProps = HTMLDivProps;

@@ -4,10 +4,11 @@ import { api } from "~/utils/api";
 
 const NotFriendButton = (props: ButtonBasedOnFriendshipStatusProps) => {
   const { mutateAsync: sendFriendRequest } = api.friendship.send.useMutation();
+  const utils = api.useContext();
 
   const handleClick = async () => {
     await sendFriendRequest({ receiverId: props.otherUserId });
-    props.refetch();
+    await utils.friendship.getFriendshipWithUser.refetch({ userId: props.otherUserId });
   };
 
   return (

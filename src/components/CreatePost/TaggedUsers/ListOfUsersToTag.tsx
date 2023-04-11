@@ -20,7 +20,7 @@ export const ListOfUsersToTag = (props: ListOfUsersToTagProps) => {
             className="flex items-center justify-between border-b border-slate-300 p-2 last:border-b-0"
           >
             <div className="flex gap-3">
-              <Avatar src={user.image} text={user.name} />
+              <Avatar src={user.image} placeholderText={user.name} size={42} />
               <h3 className="font-medium">{user.name}</h3>
             </div>
             <button className="btn-ghost btn" onClick={() => props.onToggleUser(user.id!)}>

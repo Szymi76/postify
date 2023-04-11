@@ -8,7 +8,7 @@ const BaseInformations = (props: BaseInformationsProps) => {
 
   return (
     <div className="flex gap-4 border-b border-slate-200 p-4">
-      <Avatar src={user.image} text={user.name} />
+      <Avatar src={user.image} placeholderText={user.name} />
       <div className="flex flex-col overflow-hidden whitespace-nowrap">
         <h3
           className="overflow-hidden text-ellipsis text-xl font-medium text-black"

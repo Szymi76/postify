@@ -8,6 +8,7 @@ import SunIcon from "@heroicons/react/24/outline/SunIcon";
 import Cog6ToothIcon from "@heroicons/react/24/outline/Cog6ToothIcon";
 import ArrowLeftOnRectangleIcon from "@heroicons/react/24/outline/ArrowLeftOnRectangleIcon";
 import { signOut } from "next-auth/react";
+import { PAGES } from "~/constants";
 
 type PopoutMenuProps = { user: Partial<User> };
 const PopoutMenu = forwardRef<HTMLDivElement, PopoutMenuProps>((props, ref) => {
@@ -20,7 +21,7 @@ const PopoutMenu = forwardRef<HTMLDivElement, PopoutMenuProps>((props, ref) => {
     >
       <BaseInformations user={props.user} />
       <ul className="flex flex-col gap-2 py-2 font-medium text-black">
-        <ActionListItem onClick={() => void router.push(`/profil/${props.user.id!}`)}>
+        <ActionListItem onClick={() => void router.push(PAGES.PROFILE(props.user.id!))}>
           <ArrowTopRightOnSquareIcon className="h-7" />
           Twój profil
         </ActionListItem>
@@ -30,7 +31,7 @@ const PopoutMenu = forwardRef<HTMLDivElement, PopoutMenuProps>((props, ref) => {
           Zmień motyw
         </ActionListItem>
 
-        <ActionListItem onClick={() => void router.push(`/ustawienia`)}>
+        <ActionListItem onClick={() => void router.push(`/settings`)}>
           <Cog6ToothIcon className="h-7" />
           Ustawienia
         </ActionListItem>
