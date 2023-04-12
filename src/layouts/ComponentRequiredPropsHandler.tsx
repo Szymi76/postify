@@ -44,7 +44,7 @@ const ComponentRequiredPropsHandler = (props: ComponentRequiredPropsHandlerProps
   const paddingTop = includeHeader ? PAGE_PADDING_TOP_CLASS_NAME_WITH_HEADER : "pt-0";
 
   return (
-    <div className={`${paddingTop} bg-slate-100 pb-5`}>
+    <div className={`${paddingTop} bg-slate-100`}>
       {includeHeader && <Header />}
       <Component {...props.pageProps} />
       {/* {includeFooter && <h1>Footer</h1>} */}

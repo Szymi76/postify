@@ -31,7 +31,7 @@ const PopoutMenu = forwardRef<HTMLDivElement, PopoutMenuProps>((props, ref) => {
           Zmień motyw
         </ActionListItem>
 
-        <ActionListItem onClick={() => void router.push(`/settings`)}>
+        <ActionListItem onClick={() => void router.push(PAGES.SETTINGS.ACCOUNT)}>
           <Cog6ToothIcon className="h-7" />
           Ustawienia
         </ActionListItem>

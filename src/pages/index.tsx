@@ -19,7 +19,7 @@ const Home = () => {
   const postsIds = data?.pages.map((page) => page.items.map((item) => item.id)).flat();
 
   return (
-    <div className="content-wrapper pt-10">
+    <div className="content-wrapper py-10">
       <div className="flex flex-col items-center gap-10">
         <CreatePost />
         {postsIds ? (

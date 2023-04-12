@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useRef } from "react";
-import { Dropdown, useDropdown } from "~/hooks/useDropdown";
+import React from "react";
 import Profile from "~/components/Profile";
 import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
 

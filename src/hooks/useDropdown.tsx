@@ -31,10 +31,11 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>((props, ref) =
   if (!props.show) return <></>;
 
   const className = props.className ?? "";
-  const anchor = props.anchor ?? "left";
+  const anchorClassName =
+    props.anchor == "right" ? "dropdown-secondary-right" : "dropdown-secondary-left";
 
   return (
-    <div ref={ref} className={`dropdown-secondary dropdown-secondary-${anchor} ${className} `}>
+    <div ref={ref} className={`dropdown-secondary ${anchorClassName} ${className} `}>
       {props.children}
     </div>
   );

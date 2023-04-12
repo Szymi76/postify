@@ -14,6 +14,7 @@ const LikeButton = (props: LikeButtonProps) => {
   const handleTogglePostLike = async () => {
     await toggleLike({ postId: props.postId });
     await utils.post.isPostLikedByCurrentUser.refetch({ postId: props.postId });
+    await utils.post.getPostById.refetch({ postId: props.postId });
   };
 
   return (

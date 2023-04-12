@@ -43,7 +43,7 @@ const Header = (props: HeaderProps) => {
           <EllipsisHorizontalIcon className="h-7 text-gray-500" />
         </button>
 
-        <Dropdown {...dropdownProps}>
+        <Dropdown {...dropdownProps} anchor="left">
           {!isCurrentUserAuthor && (
             <DropdownItem>
               <AuthorLinkButton authorId={post.author.id} />

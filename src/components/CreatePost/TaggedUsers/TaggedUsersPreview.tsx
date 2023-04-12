@@ -17,7 +17,9 @@ export const TaggedUsersPreview = (props: TaggedUsersPreviewProps) => {
               className="flex w-min items-center gap-2 whitespace-nowrap rounded-lg bg-slate-300 p-1"
             >
               <Avatar src={user?.image} placeholderText={user.name} size="small" />
-              <p className="text-sm font-medium text-gray-600">{user.name}</p>
+              <p className="max-w-[100px] overflow-hidden text-ellipsis text-sm font-medium text-gray-600">
+                {user.name}
+              </p>
             </div>
           );
         })}

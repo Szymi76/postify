@@ -8,6 +8,10 @@ const config = {
           "'Poppins', sans-serif",
         ],
       },
+      width: {
+        "sidebar-settings-open": "350px",
+        "sidebar-settings-closed": "65px"
+      },
       keyframes: {
         "scale-in": {
           "0%": { transform: "scale(.5)" },
