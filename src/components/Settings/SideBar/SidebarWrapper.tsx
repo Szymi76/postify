@@ -17,7 +17,7 @@ const SidebarWrapper = (props: SidebarWrapperProps) => {
       ref={ref}
       className={`border-r border-slate-200 bg-white duration-100 lg:w-sidebar-settings-open ${
         props.open
-          ? "md: fixed w-[95%] sm:w-sidebar-settings-open"
+          ? "md: fixed z-20 w-[95%] sm:w-sidebar-settings-open"
           : "flex w-sidebar-settings-closed flex-col items-center"
       }`}
       style={{ top: HEADER_HEIGHT, left: 0, height }}

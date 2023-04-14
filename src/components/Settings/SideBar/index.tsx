@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cog6ToothIcon from "@heroicons/react/24/outline/Cog6ToothIcon";
 import { useBreakpoint } from "~/hooks/useBreakpoint";
 import SidebarWrapper from "./SidebarWrapper";
 import SidebarButton from "./SidebarButton";
 import ArrowLongRightIcon from "@heroicons/react/24/outline/ArrowLongRightIcon";
+import ArrowLongLeftIcon from "@heroicons/react/24/outline/ArrowLongLeftIcon";
 import BellIcon from "@heroicons/react/24/outline/BellIcon";
 import KeyIcon from "@heroicons/react/24/outline/KeyIcon";
 import { PAGES } from "~/constants";
@@ -19,19 +20,29 @@ const SideBar = (props: SideBarProps) => {
 
   const currentBreakpointAsPixels = getPixels(breakpoint);
   const show = open || currentBreakpointAsPixels >= getPixels("xl");
+  const showCloseIcon = currentBreakpointAsPixels < getPixels("xl");
 
   const toggleSidebar = () => {
-    if (currentBreakpointAsPixels <= getPixels("lg")) setOpen(!open);
+    if (currentBreakpointAsPixels <= getPixels("xl")) setOpen(!open);
   };
 
   const buttonHref = (href: string) => `${href}?open=${String(open)}`;
+
+  useEffect(() => {
+    if (breakpoint == "xl") setOpen(false);
+  }, [breakpoint]);
 
   return (
     <SidebarWrapper open={open} onClose={() => setOpen(false)}>
       <div className="w-full border-b border-slate-200" onClick={toggleSidebar}>
         <div className={`icon flex p-3 ${show ? "justify-start" : "justify-center"}`}>
           {!show && <ArrowLongRightIcon className="pointer-events-none h-8" />}
-          {show && <h2 className="text-2xl font-semibold">Ustawienia</h2>}
+          {show && (
+            <div className="flex gap-2">
+              {showCloseIcon && <ArrowLongLeftIcon className="h-7" />}
+              <h2 className="text-2xl font-semibold">Ustawienia</h2>
+            </div>
+          )}
         </div>
       </div>
       <SidebarButton
