@@ -5,6 +5,7 @@ import { noti } from "./notification";
 import { validUserDescription } from "./validators/validUserDescription";
 import { timeFromNow } from "./timeFromNow";
 import { convertToUrl } from "./convertToUrl";
+import { addUserToRecentlySearched, getRecentlySearchedUsers } from "./recentlySearchedUsers";
 
 export {
   validUserName,
@@ -14,4 +15,6 @@ export {
   validUserDescription,
   timeFromNow,
   convertToUrl,
+  addUserToRecentlySearched,
+  getRecentlySearchedUsers,
 };

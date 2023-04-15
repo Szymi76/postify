@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import Images from "./Images";
 import { api } from "~/utils/api";
 import ActionButtons from "./ActionButtons";
@@ -6,7 +6,8 @@ import EllipsisVerticalIcon from "@heroicons/react/24/outline/EllipsisVerticalIc
 import { useSession } from "next-auth/react";
 import { useDropdown, Dropdown, DropdownItem } from "~/hooks/useDropdown";
 import ProfileSkeleton from "./ProfileSkeleton";
-import FriendshipButton from "./ActionButtons/Buttons/FriendshipButton";
+import Link from "next/link";
+import { PAGES } from "~/constants";
 
 type ProfileProps = { userId: string };
 const Profile = (props: ProfileProps) => {
@@ -34,7 +35,11 @@ const Profile = (props: ProfileProps) => {
               <EllipsisVerticalIcon className="h-7 text-gray-500" />
             </button>
             <Dropdown {...dropdownProps}>
-              {isItCurrentUserProfile && <DropdownItem>Zaktualizuj profil</DropdownItem>}
+              {isItCurrentUserProfile && (
+                <DropdownItem>
+                  <Link href={PAGES.SETTINGS.ACCOUNT}>Zaktualizuj profil</Link>
+                </DropdownItem>
+              )}
             </Dropdown>
           </div>
         </div>

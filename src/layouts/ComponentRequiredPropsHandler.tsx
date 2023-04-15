@@ -3,13 +3,14 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { TailSpin } from "react-loader-spinner";
+import BottomNavigation from "~/components/BottomNavigation";
 import Header from "~/components/Header";
 import { HEADER_HEIGHT, PAGES, PAGE_PADDING_TOP_CLASS_NAME_WITH_HEADER } from "~/constants";
 
 export type PageComponentRequiredProps = {
   header?: "include";
-  footer?: "include";
   auth?: "for-all" | "only-authenticated" | "only-unauthenticated";
+  bottomNavigation?: "not-include";
 };
 
 type ComponentRequiredPropsHandlerProps = {
@@ -27,7 +28,7 @@ const ComponentRequiredPropsHandler = (props: ComponentRequiredPropsHandlerProps
 
   const auth = requiredPageProps?.auth ?? "for-all";
   const includeHeader = Boolean(requiredPageProps?.header);
-  const includeFooter = Boolean(requiredPageProps?.footer);
+  const includeBottomNav = !Boolean(requiredPageProps?.bottomNavigation);
 
   const redirectCurrentUserToSigninPage =
     auth == "only-authenticated" && status == "unauthenticated";
@@ -47,7 +48,7 @@ const ComponentRequiredPropsHandler = (props: ComponentRequiredPropsHandlerProps
     <div className={`${paddingTop} bg-slate-100`}>
       {includeHeader && <Header />}
       <Component {...props.pageProps} />
-      {/* {includeFooter && <h1>Footer</h1>} */}
+      {/* {includeBottomNav && <BottomNavigation />} */}
     </div>
   );
 };

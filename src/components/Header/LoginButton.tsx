@@ -1,10 +1,11 @@
 import React from "react";
 import Link from "next/link";
+import { PAGES } from "~/constants";
 
 const LoginButton = () => {
   return (
-    <Link href="/auth/signin">
-      <button className="btn-ghost btn">Zaloguj się</button>
+    <Link href={PAGES.SINGIN}>
+      <button className="btn-ghost btn whitespace-nowrap">Zaloguj się</button>
     </Link>
   );
 };

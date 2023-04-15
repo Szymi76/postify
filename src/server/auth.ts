@@ -56,6 +56,7 @@ export const authOptions: NextAuthOptions = {
         session.user.emailVerified = user.emailVerified;
         session.user.backgroundImage = user.backgroundImage;
         session.user.lastActive = user.lastActive;
+        session.user.description = user.description;
         // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;

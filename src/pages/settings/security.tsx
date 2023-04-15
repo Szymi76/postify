@@ -1,16 +1,17 @@
 import React from "react";
-import SettingsPageContentWrapper from "~/components/Settings/Layouts/SettingsPageContentWrapper";
-import SettingsPageWrapper from "~/components/Settings/Layouts/SettingsPageWrapper";
+import * as Settings from "~/components/Settings/Layouts";
 import SideBar from "~/components/Settings/SideBar";
 import { PAGES } from "~/constants";
 import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
 
 const SecuritySettings = () => {
   return (
-    <SettingsPageWrapper>
+    <Settings.Wrapper>
       <SideBar currentPageHref={PAGES.SETTINGS.SECURITY} />
-      <SettingsPageContentWrapper>3</SettingsPageContentWrapper>
-    </SettingsPageWrapper>
+      <Settings.Form>
+        <Settings.Title>Zabezpieczenia</Settings.Title>
+      </Settings.Form>
+    </Settings.Wrapper>
   );
 };
 

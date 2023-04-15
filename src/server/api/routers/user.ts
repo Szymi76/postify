@@ -24,17 +24,19 @@ export const userRouter = createTRPCRouter({
 
       // sprawdzanie czy zdjęcie profilowe jest okej
       let image = input.image ? input.image : ctx.session.user.image;
-      if (!image) image = null;
+      if (!image || input.image == null) image = null;
+
+      console.log(input.backgroundImage);
 
       // sprawdzanie czy zdjęcie w tle jest okej
       let backgroundImage = input.backgroundImage
         ? input.backgroundImage
         : ctx.session.user.backgroundImage;
-      if (!backgroundImage) backgroundImage = null;
+      if (!backgroundImage || input.backgroundImage == null) backgroundImage = null;
 
       // aktualizowanie danych
       await ctx.prisma.user.update({
-        data: { name, image, backgroundImage },
+        data: { name, description, image, backgroundImage },
         where: { id: ctx.session.user.id },
       });
     }),
@@ -51,7 +53,8 @@ export const userRouter = createTRPCRouter({
       const users = await ctx.prisma.user.findMany({
         where: {
           name: {
-            startsWith: input.query,
+            contains: input.query,
+            mode: "insensitive",
           },
         },
       });
@@ -60,7 +63,7 @@ export const userRouter = createTRPCRouter({
     }),
 
   // zwraca użytkowników na podstawie id
-  getByIds: protectedProcedure
+  getByIds: publicProcedure
     .input(z.object({ ids: z.string().array() }))
     .query(async ({ ctx, input }) => {
       const usersPromises = input.ids.map((id) => ctx.prisma.user.findUnique({ where: { id } }));
@@ -90,6 +93,38 @@ export const userRouter = createTRPCRouter({
         // orderBy: {
         //   myCursor: 'asc',
         // },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > input.limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.id;
+      }
+      return {
+        items,
+        nextCursor,
+      };
+    }),
+
+  getInfiniteUsersWithQuery: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().nullish(), // <-- "cursor" needs to exist, but can be any type
+        query: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      // const limit = input.limit ?? 50;
+      const { cursor } = input;
+      const items = await ctx.prisma.user.findMany({
+        take: input.limit + 1, // get an extra item at the end which we'll use as next cursor
+        where: {
+          name: {
+            contains: input.query,
+            mode: "insensitive",
+          },
+        },
+        cursor: cursor ? { id: cursor } : undefined,
       });
       let nextCursor: typeof cursor | undefined = undefined;
       if (items.length > input.limit) {

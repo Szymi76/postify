@@ -27,10 +27,10 @@ export const Form = (props: FormProps) => {
   const height = `calc(100vh - ${HEADER_HEIGHT}px)`;
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 overflow-y-auto">
       <form
         {...formProps}
-        className="mx-auto flex h-full w-full max-w-3xl flex-col gap-5 overflow-y-auto px-5 py-8"
+        className="mx-auto flex h-full w-full max-w-3xl flex-col gap-5 px-5 py-8"
         style={{ height }}
       />
     </div>
@@ -79,8 +79,8 @@ export const Footer = (props: FooterProps) => {
     INPUT CONTAINER
 */
 
-type InputControlProps = { children: React.ReactNode; error?: string; label: string; alt?: string };
-export const InputControl = (props: InputControlProps) => {
+type FormControlProps = { children: React.ReactNode; error?: string; label: string; alt?: string };
+export const FormControl = (props: FormControlProps) => {
   return (
     <div className="form-control w-full max-w-xs">
       <label className="label">

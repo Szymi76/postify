@@ -15,16 +15,25 @@ type FileInputProps = HTMLInputProps & {
 };
 
 const FileInput2 = forwardRef<HTMLInputElement, FileInputProps>((props, ref) => {
-  const url = convertToUrl(props.previewFile);
-  const previewType = props.previewType ?? "avatar";
+  const {
+    type,
+    className,
+    previewFile,
+    placeholderText,
+    previewType,
+    onClear,
+    defaultValue,
+    ...inputProps
+  } = props;
 
-  const { type, className, ...inputProps } = props;
+  const url = convertToUrl(previewFile);
+  const preview = previewType ?? "avatar";
 
   return (
     <div
       className={`flex ${previewType == "avatar" ? "flex-row items-center" : "flex-col"}  gap-5`}
     >
-      {previewType == "avatar" ? (
+      {preview == "avatar" ? (
         <Avatar placeholderText={props?.placeholderText} src={url} size={62} />
       ) : (
         <div className="h-[120px] w-[380px] overflow-hidden rounded-md bg-gray-200">

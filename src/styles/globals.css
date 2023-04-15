@@ -60,6 +60,20 @@
     @apply mt-0
 }
 
+.btm-nav {
+    height: 56px;
+}
+
+.btm-nav > button:hover {
+    backdrop-filter: brightness(85%);
+    transition-duration: 100ms;
+}
+
+.btm-nav > button:active > * {
+    scale: .85;
+    transition-duration: 100ms;
+}
+
 @layer components {
     .layout {
         @apply border border-slate-200 rounded-lg bg-white p-5;
