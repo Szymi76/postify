@@ -1,4 +1,12 @@
-import { DetailedHTMLProps, HTMLAttributes, RefObject, forwardRef, useState } from "react";
+import {
+  DetailedHTMLProps,
+  HTMLAttributes,
+  LabelHTMLAttributes,
+  RefObject,
+  UIEvent,
+  forwardRef,
+  useState,
+} from "react";
 import { useOutsideClick } from "./useOutsideClick";
 
 export const useModal = (triggers?: RefObject<HTMLElement>[]) => {
@@ -24,6 +32,7 @@ export type ModalProps = {
   show: boolean;
   onClose: () => void;
   className?: string;
+  onScroll?: (e: UIEvent<HTMLLabelElement, globalThis.UIEvent>) => void;
 };
 
 export const Modal = forwardRef<HTMLLabelElement, ModalProps>((props, ref) => {
@@ -33,7 +42,7 @@ export const Modal = forwardRef<HTMLLabelElement, ModalProps>((props, ref) => {
 
   return (
     <label className={`modal ${props.show ? "modal-open" : ""}`}>
-      <label ref={ref} className={`modal-box relative ${className}`}>
+      <label onScroll={props.onScroll} ref={ref} className={`modal-box relative ${className}`}>
         {props.children}
       </label>
     </label>

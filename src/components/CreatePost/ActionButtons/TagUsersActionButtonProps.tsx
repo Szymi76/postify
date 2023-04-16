@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import UserGroupIcon from "@heroicons/react/24/outline/UserGroupIcon";
 import { ListOfUsersToTag } from "../TaggedUsers/ListOfUsersToTag";
 import { Modal, ModalContent, ModalTitle, useModal } from "~/hooks/useModal";
+import useDebounce from "~/hooks/useBebounce";
 
 export type TagUsersActionButtonProps = {
   taggedUsersIds: string[];
@@ -12,9 +13,25 @@ export type TagUsersActionButtonProps = {
 };
 export const TagUsersActionButton = (props: TagUsersActionButtonProps) => {
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query, 300);
   const openButtonRef = useRef<HTMLButtonElement>(null);
   const { open, modalProps } = useModal([openButtonRef]);
-  const { data: users, isLoading } = api.user.find.useQuery({ query, omitMe: true });
+  const { data, fetchNextPage, hasNextPage, isLoading } =
+    api.user.getInfiniteUsersWithQuery.useInfiniteQuery(
+      {
+        limit: 4,
+        query: debouncedQuery as string,
+      },
+      { getNextPageParam: (lastPage) => lastPage.nextCursor }
+    );
+
+  const users = data?.pages.map((page) => page.items.map((item) => item)).flat() ?? [];
+
+  const handleScroll = (e: React.UIEvent<HTMLLabelElement, UIEvent>) => {
+    const isScrollAtEnd =
+      e.currentTarget.scrollHeight - e.currentTarget.scrollTop == e.currentTarget.clientHeight;
+    if (isScrollAtEnd) void fetchNextPage();
+  };
 
   return (
     <>
@@ -22,7 +39,7 @@ export const TagUsersActionButton = (props: TagUsersActionButtonProps) => {
         <UserGroupIcon className="h-6" />
         Oznacz
       </button>
-      <Modal {...modalProps} className="h-[400px]">
+      <Modal {...modalProps} className="h-[400px]" onScroll={handleScroll}>
         <ModalTitle>Oznacz inne osoby</ModalTitle>
         <ModalContent>
           <div className="relative">
@@ -35,11 +52,13 @@ export const TagUsersActionButton = (props: TagUsersActionButtonProps) => {
             <MagnifyingGlassIcon className="absolute top-3 left-4 h-6 text-slate-400" />
           </div>
           {!isLoading ? (
-            <ListOfUsersToTag
-              users={users}
-              taggedUsersIds={props.taggedUsersIds}
-              onToggleUser={props.onToggleUser}
-            />
+            <>
+              <ListOfUsersToTag
+                users={users}
+                taggedUsersIds={props.taggedUsersIds}
+                onToggleUser={props.onToggleUser}
+              />
+            </>
           ) : (
             <div className="flex justify-center py-5">
               <TailSpin height={35} color="#3b82f6" />

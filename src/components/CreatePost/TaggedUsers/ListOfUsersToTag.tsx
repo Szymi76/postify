@@ -1,4 +1,5 @@
 import { User } from "@prisma/client";
+import { UIEvent } from "react";
 import Avatar from "~/components/Global/Avatar";
 
 export type ListOfUsersToTagProps = {

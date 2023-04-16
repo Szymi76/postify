@@ -8,6 +8,7 @@ import * as UsersList from "./UsersList";
 import { useSearch } from "~/store";
 import BottomNavigation from "~/components/BottomNavigation";
 import { useOnKey } from "~/hooks/useOnKey";
+import { TailSpin } from "react-loader-spinner";
 
 const Search = () => {
   const { query, setQuery, isOpen, forceClose } = useSearch();
@@ -17,6 +18,7 @@ const Search = () => {
     data: infiniteData,
     fetchNextPage,
     hasNextPage,
+    isLoading: isLoadingResults,
   } = api.user.getInfiniteUsersWithQuery.useInfiniteQuery(
     {
       limit: 4,
@@ -70,7 +72,9 @@ const Search = () => {
               <MagnifyingGlassIcon className="h-6" />
             </div>
           </div>
-          <UsersList.Title>Wyniki</UsersList.Title>
+          <UsersList.Title>
+            Wyniki {isLoadingResults && <TailSpin height={20} width={20} color="#3b82f6" />}
+          </UsersList.Title>
           <UsersList.List users={users} onEachClick={handleUserClick} />
           {hasNextPage && <UsersList.FetchMoreUsersButton onClick={() => void fetchNextPage()} />}
           <UsersList.Title>Ostatnio wyszukiwani</UsersList.Title>
