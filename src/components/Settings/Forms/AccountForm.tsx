@@ -65,6 +65,7 @@ const AccountForm = () => {
   }, [currentUser]);
 
   return (
+    /* eslint-disable */
     <Settings.Form onSubmit={handleSubmit(onSubmit)}>
       <Settings.Title>Konto</Settings.Title>
       <Settings.SectionDescription
