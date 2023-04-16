@@ -9,9 +9,7 @@ import { prisma } from "../db";
  * Creates context for an incoming request
  * @link https://trpc.io/docs/context
  */
-export const createContext = async (
-  opts: trpcNext.CreateNextContextOptions | NodeHTTPCreateContextFnOptions<IncomingMessage, ws>
-) => {
+export const createContext = async (opts: trpcNext.CreateNextContextOptions) => {
   const session = await getSession(opts);
 
   console.log("createContext for", session?.user?.name ?? "unknown user");

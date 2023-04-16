@@ -20,7 +20,6 @@ const Page = () => {
 const requiredPageProps: PageComponentRequiredProps = {
   auth: "for-all",
   header: "include",
-  footer: "include",
 };
 
 Page.requiredPageProps = requiredPageProps;
