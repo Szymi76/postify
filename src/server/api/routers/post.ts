@@ -3,7 +3,9 @@ import { noti, validUserName } from "~/utils/other";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../../../server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  // DODAWANIE NOWEGO POSTU
+  /**
+   * Dodawanie nowego posta
+   */
   add: protectedProcedure
     .input(
       z.object({
@@ -53,7 +55,10 @@ export const postRouter = createTRPCRouter({
       return post;
     }),
 
-  // AKTUALIZOWANIE POSTU
+  /**
+   * Aktualizowanie wybranych danych postu na podstawie id.
+   * Tylko autor ma prawo do edytowania!
+   */
   update: protectedProcedure
     .input(
       z.object({
@@ -117,7 +122,10 @@ export const postRouter = createTRPCRouter({
       }
     }),
 
-  // POBIERANIE POSTU NA PODSTAWIE ID
+  /**
+   * Wybieranie posta na podstawie podanego id lub `null` w przypadku
+   * nie znalezienia.
+   */
   getPostById: publicProcedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -134,7 +142,10 @@ export const postRouter = createTRPCRouter({
       return post;
     }),
 
-  // USUWANIE POSTU NA PODSTAWIE ID
+  /**
+   * Usuwanie posta na podstawie id.
+   * Tylko autor ma prawo do usunięcia postu!
+   */
   delete: protectedProcedure
     .input(z.object({ postId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -154,7 +165,11 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
-  // ZMIENIANIE POLUBIENIA POSTU NA PODSTAWIE ID W ZALEŻNOŚCI CZY UŻYTKOWNIK (NIE) POLUBIŁ POST
+  /**
+   * Zmienianie polubienia postu przez aktualnie zalogowanego użytkownika na podstawie id,
+   * czyli, jeśli użytkownik ma aktualnie polubiony post to ten zostanie ustawiony jako NIE polubiony
+   * i na odwrót.
+   */
   toggleLike: protectedProcedure
     .input(z.object({ postId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -187,7 +202,11 @@ export const postRouter = createTRPCRouter({
       }
     }),
 
-  // ZMIANIANIE ZAZNACZENIA POSTU NA PODSTAWIE ID W ZALEŻNOŚCI CZY UŻYTKOWNIK (NIE)ZAZNACZYŁ POST
+  /**
+   * Zmienianie zaznaczenia postu przez aktualnie zalogowanego użytkownika na podstawie id,
+   * czyli, jeśli użytkownik ma aktualnie zaznaczony post to ten zostanie ustawiony jako NIE zaznaczony
+   * i na odwrót.
+   */
   toggleBookmarked: protectedProcedure
     .input(z.object({ postId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -222,7 +241,9 @@ export const postRouter = createTRPCRouter({
       }
     }),
 
-  // ZAZNACZANIE POSTU JAKO ZOBACZONY
+  /**
+   * Zaznaczanie postu jako widziany przez aktualnie zalogowanego użytkownika na podstawie id.
+   */
   markAsSeen: protectedProcedure
     .input(z.object({ postId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -246,7 +267,10 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
-  // SPRAWDZA CZY PODANY POST JAKO ID ZNAJDUJE SIĘ ZAZNACZONYCH U AKTUALNIE ZALOGOWANEGO UŻYTKOWNIKA
+  /**
+   * Sprawdzanie czy post na podstawie id jest zaznaczony przez aktualnie zalogowanego użytkownika.
+   * Zwraca zaznaczenie w postaci `Bookmarked`, jeśli post jest zaznaczony w przeciwnym przypadku zwraca `null`.
+   */
   isPostBookmarkedByCurrentUser: protectedProcedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -256,6 +280,10 @@ export const postRouter = createTRPCRouter({
       return bookmark;
     }),
 
+  /**
+   * Sprawdzanie czy post na podstawie id jest polubiany przez aktualnie zalogowanego użytkownika.
+   * Zwraca polubienie w postaci `Like`, jeśli post jest polubiony w przeciwnym przypadku zwraca `null`.
+   */
   isPostLikedByCurrentUser: protectedProcedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -265,6 +293,10 @@ export const postRouter = createTRPCRouter({
       return like;
     }),
 
+  /**
+   * Zwraca id najnowszych postów z bazy danych. Wykorzystuje metode 'infiniteQuery'
+   * (wytłumaczone w przypadku 'getInfiniteUsers' w roucie 'user') .
+   */
   getInfiniteLatestsPostsIds: publicProcedure
     .input(
       z.object({

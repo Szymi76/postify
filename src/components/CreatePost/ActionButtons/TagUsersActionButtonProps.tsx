@@ -16,14 +16,13 @@ export const TagUsersActionButton = (props: TagUsersActionButtonProps) => {
   const debouncedQuery = useDebounce(query, 300);
   const openButtonRef = useRef<HTMLButtonElement>(null);
   const { open, modalProps } = useModal([openButtonRef]);
-  const { data, fetchNextPage, hasNextPage, isLoading } =
-    api.user.getInfiniteUsersWithQuery.useInfiniteQuery(
-      {
-        limit: 4,
-        query: debouncedQuery as string,
-      },
-      { getNextPageParam: (lastPage) => lastPage.nextCursor }
-    );
+  const { data, fetchNextPage, isLoading } = api.user.getInfiniteUsers.useInfiniteQuery(
+    {
+      limit: 4,
+      query: debouncedQuery as string,
+    },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor }
+  );
 
   const users = data?.pages.map((page) => page.items.map((item) => item)).flat() ?? [];
 

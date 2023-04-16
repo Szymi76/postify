@@ -3,7 +3,10 @@ import { createTRPCRouter, publicProcedure, protectedProcedure } from "../../../
 import { User } from "@prisma/client";
 
 export const userRouter = createTRPCRouter({
-  // aktualizacja nazwy, zdjęcia profilowego i zdjęcia w tle
+  /**
+   * Aktualizuje nazwę, opis, zdjęcie profilowe lub zdjęcie w tle
+   * aktualnie zalogowanego użytkownika.
+   */
   update: protectedProcedure
     .input(
       z.object({
@@ -41,12 +44,18 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
-  // usuwanie uzytkownika
+  /**
+   * Usuwanie aktualnie zalogowanego użytkownika.
+   */
   delete: protectedProcedure.mutation(async ({ ctx }) => {
     await ctx.prisma.user.delete({ where: { id: ctx.session.user.id } });
   }),
 
-  // szukanie użytkownika po nazwie
+  /**
+   * Szukanie użytkowników na podstawie nazwy (małe i duże litery)
+   * oraz opcjonalne usunięcie aktualnie zalogowanego użytkownika z
+   * tablicy wyników.
+   */
   find: protectedProcedure
     .input(z.object({ query: z.string(), omitMe: z.boolean().optional() }))
     .query(async ({ ctx, input }) => {
@@ -62,7 +71,9 @@ export const userRouter = createTRPCRouter({
       return input.omitMe ? users.filter((user) => user.id != ctx.session.user.id) : users;
     }),
 
-  // zwraca użytkowników na podstawie id
+  /**
+   * Zwraca użytkowników na podstawie id podanych jako input
+   */
   getByIds: publicProcedure
     .input(z.object({ ids: z.string().array() }))
     .query(async ({ ctx, input }) => {
@@ -73,12 +84,19 @@ export const userRouter = createTRPCRouter({
       return notNullUsers;
     }),
 
-  getInfiniteUsersWithIds: protectedProcedure
+  /**
+   * Zwracanie użytkowników, którzy występują w tablicy id lub nazwa zawiera query (małe i duże litery).
+   * Oba inputy są opcjonalne, route należy do kategorii (infinite), więc co każde użycie metody
+   * 'fetchNextPage' z hooka useInfiniteQuery pobieranie są kolejni użytkownikcy, czyli tam gdzie
+   * znajduję się aktualnie (kursor +1 ) + limit.
+   */
+  getInfiniteUsers: protectedProcedure
     .input(
       z.object({
         limit: z.number(),
         cursor: z.string().nullish(), // <-- "cursor" needs to exist, but can be any type
-        ids: z.string().array(),
+        ids: z.string().array().optional(),
+        query: z.string().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -87,42 +105,8 @@ export const userRouter = createTRPCRouter({
       const items = await ctx.prisma.user.findMany({
         take: input.limit + 1, // get an extra item at the end which we'll use as next cursor
         where: {
-          id: { in: input.ids },
-        },
-        cursor: cursor ? { id: cursor } : undefined,
-        // orderBy: {
-        //   myCursor: 'asc',
-        // },
-      });
-      let nextCursor: typeof cursor | undefined = undefined;
-      if (items.length > input.limit) {
-        const nextItem = items.pop();
-        nextCursor = nextItem!.id;
-      }
-      return {
-        items,
-        nextCursor,
-      };
-    }),
-
-  getInfiniteUsersWithQuery: protectedProcedure
-    .input(
-      z.object({
-        limit: z.number(),
-        cursor: z.string().nullish(), // <-- "cursor" needs to exist, but can be any type
-        query: z.string(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      // const limit = input.limit ?? 50;
-      const { cursor } = input;
-      const items = await ctx.prisma.user.findMany({
-        take: input.limit + 1, // get an extra item at the end which we'll use as next cursor
-        where: {
-          name: {
-            contains: input.query,
-            mode: "insensitive",
-          },
+          ...(input.ids && { id: { in: input.ids } }),
+          ...(input.query && { name: { contains: input.query, mode: "insensitive" } }),
         },
         cursor: cursor ? { id: cursor } : undefined,
       });

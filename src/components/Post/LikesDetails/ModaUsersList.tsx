@@ -6,7 +6,7 @@ import { api } from "~/utils/api";
 
 type ModalUsersListProps = { usersIds: string[] };
 const ModalUsersList = (props: ModalUsersListProps) => {
-  const { data, fetchNextPage } = api.user.getInfiniteUsersWithIds.useInfiniteQuery(
+  const { data, fetchNextPage } = api.user.getInfiniteUsers.useInfiniteQuery(
     { limit: 3, ids: props.usersIds },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );

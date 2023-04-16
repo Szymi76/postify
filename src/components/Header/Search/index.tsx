@@ -19,7 +19,7 @@ const Search = () => {
     fetchNextPage,
     hasNextPage,
     isLoading: isLoadingResults,
-  } = api.user.getInfiniteUsersWithQuery.useInfiniteQuery(
+  } = api.user.getInfiniteUsers.useInfiniteQuery(
     {
       limit: 4,
       query: debouncedQuery as string,

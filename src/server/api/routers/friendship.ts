@@ -1,5 +1,5 @@
 import { Friendship, User } from "@prisma/client";
-import { boolean, z } from "zod";
+import { z } from "zod";
 import { noti } from "../../../utils/other";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../../../server/api/trpc";
@@ -7,7 +7,11 @@ import { createTRPCRouter, publicProcedure, protectedProcedure } from "../../../
 const actionEnum = z.enum(["accept", "reject"]);
 
 export const friendshipRouter = createTRPCRouter({
-  // wysyłanie zaproszenia do znajomych
+  /**
+   *
+   * Wysyła zaproszenie do znajomcyh
+   * (od aktualnie zalogowanego użytkownika) => (do użytkownika z id poodanych w input)
+   */
   send: protectedProcedure
     .input(z.object({ receiverId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -62,7 +66,12 @@ export const friendshipRouter = createTRPCRouter({
       return friendship;
     }),
 
-  // akceptowanie zaproszenia do znajomych
+  /**
+   * Odpowiadanie na zaproszenie do znajomcyh od jakiegoś użytkownika.
+   * Dwie możliwości na odpowiedzenie:
+   *  1. Zaakceptowanie czy zostanie znajomymi
+   *  2. Odrzucenie
+   */
   response: protectedProcedure
     .input(z.object({ friendshipId: z.string(), action: actionEnum }))
     .mutation(async ({ ctx, input }) => {
@@ -110,7 +119,9 @@ export const friendshipRouter = createTRPCRouter({
       }
     }),
 
-  // usuwanie użytkownika ze znajomych
+  /**
+   * Usuwanie użytkownika ze znajomcyh
+   */
   remove: protectedProcedure
     .input(z.object({ friendshipId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -140,7 +151,9 @@ export const friendshipRouter = createTRPCRouter({
       });
     }),
 
-  // lista znajomości
+  /**
+   * Zwracanie listy znajomych użytkownika (na podstawie id podanych w input)
+   */
   list: protectedProcedure
     .input(z.object({ userId: z.string().optional() }))
     .query(async ({ ctx, input }) => {
@@ -157,7 +170,11 @@ export const friendshipRouter = createTRPCRouter({
       })[];
     }),
 
-  // status znajomości z danych użytkownikiem
+  /**
+   * Zwracanie znajomości aktualnie zalogowanego użytkownika z użytkownikiem na podstawie id
+   * podanym w input. Zwraca `Friendship`, jeśli użytkownicy są znajomymi lub, któryś z użytkowników wysłał
+   * zaproszenie do znajomcyh w innym przypadku zwraca `null`, czyli użytkownikcy nie są znajomymi.
+   */
   getFriendshipWithUser: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ ctx, input }) => {

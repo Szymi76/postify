@@ -5,7 +5,10 @@ import { createTRPCRouter, publicProcedure, protectedProcedure } from "../../../
 import { TRPCError } from "@trpc/server";
 
 export const commentRouter = createTRPCRouter({
-  // DODAWANIE KOMENTARZA DO POSTU
+  /**
+   * Dodawanie nowego komentarza do postu (na podstawie id postu podanych w input).
+   * Autorem jest aktualnie zalogowany użytkownik.
+   */
   add: protectedProcedure
     .input(z.object({ postId: z.string(), text: z.string().min(1).max(80) }))
     .mutation(async ({ ctx, input }) => {
@@ -26,7 +29,10 @@ export const commentRouter = createTRPCRouter({
       return comment;
     }),
 
-  // USUWANIE KOMENTARZA PO ID
+  /**
+   * Usuwanie komentarza na podstawie id.
+   * Tylko autor komentarza może go usunąć
+   */
   delete: protectedProcedure
     .input(z.object({ commentId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -44,7 +50,9 @@ export const commentRouter = createTRPCRouter({
       await ctx.prisma.comment.delete({ where: { id: input.commentId } });
     }),
 
-  // POBIERANIE KOMENTZRZA PO ID
+  /**
+   * Pobieranie komentarza na podstawie id lub `null` w przypdaku jego braku.
+   */
   getCommentWithId: protectedProcedure
     .input(z.object({ id: z.string().nullable() }))
     .query(async ({ ctx, input }) => {
@@ -56,6 +64,9 @@ export const commentRouter = createTRPCRouter({
       return comment;
     }),
 
+  /**
+   * Zwraca komentarze jako infiniteQuery (wytłumaczone w przypadku 'getInfiniteUsers' w roucie 'user');
+   */
   getInfiniteComments: protectedProcedure
     .input(
       z.object({
