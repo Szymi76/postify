@@ -59,7 +59,7 @@ export const friendshipRouter = createTRPCRouter({
         data: {
           user: { connect: { id: input.receiverId } },
           type: noti.reveiveFriendRequest.type,
-          text: noti.reveiveFriendRequest.text(currentUser.name ?? "kogoś"),
+          creator: { connect: { id: ctx.session.user.id } },
         },
       });
 
@@ -98,7 +98,7 @@ export const friendshipRouter = createTRPCRouter({
           data: {
             user: { connect: { id: friendship.senderId } },
             type: noti.acceptFriendRequest.type,
-            text: noti.acceptFriendRequest.text(ctx.session.user.name ?? "Ktoś"),
+            creator: { connect: { id: ctx.session.user.id } },
           },
         });
       }
@@ -111,9 +111,9 @@ export const friendshipRouter = createTRPCRouter({
         // dodawanie powiadomienia o odrzuconym zaproszeniu
         await ctx.prisma.notification.create({
           data: {
-            userId: friendship.senderId,
+            user: { connect: { id: friendship.receiverId } },
             type: noti.rejectFriendRequest.type,
-            text: noti.rejectFriendRequest.text(ctx.session.user.name ?? "Ktoś"),
+            creator: { connect: { id: ctx.session.user.id } },
           },
         });
       }
@@ -141,7 +141,7 @@ export const friendshipRouter = createTRPCRouter({
         data: {
           user: { connect: { id: otherUserId } },
           type: noti.removeFriend.type,
-          text: noti.removeFriend.text(ctx.session.user.name ?? "Ktoś"),
+          creator: { connect: { id: ctx.session.user.id } },
         },
       });
 
@@ -154,20 +154,26 @@ export const friendshipRouter = createTRPCRouter({
   /**
    * Zwracanie listy znajomych użytkownika (na podstawie id podanych w input)
    */
-  list: protectedProcedure
-    .input(z.object({ userId: z.string().optional() }))
+  friendsList: protectedProcedure
+    .input(z.object({ userId: z.string().optional(), limit: z.number().optional() }))
     .query(async ({ ctx, input }) => {
-      if (!input.userId) input.userId = ctx.session.user.id;
+      const userId = input.userId ?? ctx.session.user.id;
 
       const friendships = await ctx.prisma.friendship.findMany({
         include: { sender: true, receiver: true },
-        where: { OR: [{ senderId: input.userId }, { receiverId: input.userId }] },
+        where: {
+          OR: [{ senderId: userId }, { receiverId: userId }],
+          status: "accepted",
+        },
+        ...(input.limit && { take: input.limit }),
       });
 
-      return friendships as (Friendship & {
-        sender: User;
-        receiver: User;
-      })[];
+      const friends = friendships.map((friendship) => {
+        if (friendship.senderId == userId) return friendship.receiver;
+        else return friendship.sender;
+      });
+
+      return friends;
     }),
 
   /**

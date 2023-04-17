@@ -1,22 +1,32 @@
 export const noti = {
   reveiveFriendRequest: {
     type: "receive-friend-request",
-    text: (name: string) => `Otrzymałeś zaproszenie do znajomych od ${name} `,
   },
   removeFriend: {
     type: "remove-friend",
-    text: (name: string) => `${name} usunął się ze znajomych`,
   },
   acceptFriendRequest: {
     type: "accepted-friend-request",
-    text: (name: string) => `${name} zaakceptował twoje zaproszenie do znajomcyh`,
   },
   rejectFriendRequest: {
     type: "reject-friend-request",
-    text: (name: string) => `${name} odrzucił twoje zaproszenie do znajomcyh`,
   },
   someoneTaggedYou: {
     type: "someone-tagged-you",
-    text: (name: string) => `${name} oznaczył cię pod postem`,
   },
+};
+
+export const createNotificationText = (type: string, name: string) => {
+  switch (type) {
+    case "receive-friend-request":
+      return `${name} wysłał do ciebie zaproszenie do znajomych`;
+    case "remove-friend":
+      return `${name} usunął cię ze znajomcyh`;
+    case "accepted-friend-request":
+      return `${name} zaakceptował twoje zaproszenie do znajomcyh`;
+    case "reject-friend-request":
+      return `${name} odrzucił twoje zaproszenie do znajomcyh`;
+    case "someone-tagged-you":
+      return `${name} oznaczył się w najnowszym poście`;
+  }
 };

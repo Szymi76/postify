@@ -42,7 +42,7 @@ const Avatar = (props: AvatarProps) => {
         className={`rounded-full bg-slate-200 ${className}`}
         style={{ height: size + "px", width: size + "px" }}
       >
-        <span className="text-xl">{placeholderText}</span>
+        <span className="text-xl">{placeholderText?.toLocaleUpperCase()}</span>
       </div>
     </div>
   );

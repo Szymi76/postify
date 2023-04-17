@@ -7,13 +7,17 @@ export const notificationRouter = createTRPCRouter({
   /**
    * Zwraca wszystkie nie zobaczone powiadomienia aktualnie zalogowanego użytkownika.
    */
-  notSeen: protectedProcedure.query(async ({ ctx }) => {
-    const notifications = await ctx.prisma.notification.findMany({
-      where: { userId: ctx.session.user.id, SeenBy: null },
-    });
+  notSeen: protectedProcedure
+    .input(z.object({ limit: z.number().optional() }))
+    .query(async ({ ctx, input }) => {
+      const notifications = await ctx.prisma.notification.findMany({
+        where: { userId: ctx.session.user.id, seenAt: null },
+        include: { creator: true },
+        ...(input.limit && { take: input.limit }),
+      });
 
-    return notifications;
-  }),
+      return notifications;
+    }),
 
   /**
    * Zwraca wszystkie powiadomienia aktualnie zalogowanego użytkownika (widzianie i nie widziane).
@@ -34,7 +38,7 @@ export const notificationRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const updatePromises = input.notificationsIds.map((id) =>
         ctx.prisma.notification.update({
-          data: { SeenBy: new Date().toISOString() },
+          data: { seenAt: new Date().toISOString() },
           where: { id },
         })
       );

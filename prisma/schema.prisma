@@ -57,7 +57,8 @@ model User {
     sessions               Session[]
     senderFirendships      Friendship[]     @relation("senderFriendships")
     receiverFriendships    Friendship[]     @relation("receiverFriendships")
-    notification           Notification[]   
+    notification           Notification[]   @relation("notificationReceivers")
+    notificationCreator    Notification[]   @relation("notificationCreators")
     posts                  Post[]           
     taggedUser             TaggedUser[]     
     likes                  Like[]           
@@ -65,7 +66,7 @@ model User {
     comments               Comment[]        
     participants           Participant[]    
     creators               Community[]      
-    SeenBy                 SeenBy[]           
+    seenBy                 SeenBy[]  
 }
 
 model VerificationToken {
@@ -91,10 +92,11 @@ model Friendship  {
 model Notification {
     id          String      @id @default(cuid())
     userId      String      
-    user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-    SeenBy        DateTime?
+    user        User        @relation("notificationReceivers", fields: [userId], references: [id], onDelete: Cascade)
+    creatorId   String
+    creator     User        @relation("notificationCreators", fields: [creatorId], references: [id], onDelete: Cascade)
+    seenAt      DateTime?
     type        String
-    text        String
     createdAt   DateTime    @default(now())
 }
 

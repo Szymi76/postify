@@ -2,17 +2,18 @@ import React, { useCallback } from "react";
 import CreatePost from "~/components/CreatePost";
 import Post from "~/components/Post";
 import PostSkeleton from "~/components/Post/PostSkeleton";
+import FriendsWidget from "~/components/Widgets/FriendsWidget";
+import NotificationsWidget from "~/components/Widgets/NotificationsWidget";
 import { HEADER_HEIGHT } from "~/constants";
 import { useOnEndOfWindowScroll } from "~/hooks/useOnEndOfWindowScroll";
 import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
 import { api } from "~/utils/api";
 
 const Home = () => {
-  const { data, fetchNextPage, isLoading, isFetching } =
-    api.post.getInfiniteLatestsPostsIds.useInfiniteQuery(
-      { limit: 3 },
-      { getNextPageParam: (lastPage) => lastPage.nextCursor }
-    );
+  const { data, fetchNextPage, isFetching } = api.post.getInfiniteLatestsPostsIds.useInfiniteQuery(
+    { limit: 3 },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor }
+  );
 
   const fetchMorePosts = () => !isFetching && void fetchNextPage();
 
@@ -26,9 +27,14 @@ const Home = () => {
   const height = `calc(100vh - ${HEADER_HEIGHT}px)`;
 
   return (
-    <div className="overflow-y-scroll" style={{ height }} onScroll={handleScroll}>
-      <div className="content-wrapper py-10">
-        <div className="flex flex-col items-center gap-10">
+    <div
+      className="flex justify-center gap-10 overflow-y-scroll pt-10"
+      style={{ height }}
+      onScroll={handleScroll}
+    >
+      <NotificationsWidget />
+      <div className="w-[95%] max-w-3xl">
+        <div className="flex flex-col items-center gap-10 pb-10">
           <CreatePost />
           {postsIds ? (
             postsIds.map((postId) => <Post key={postId} id={postId} fullSection={false} />)
@@ -40,6 +46,7 @@ const Home = () => {
           )}
         </div>
       </div>
+      <FriendsWidget />
     </div>
   );
 };

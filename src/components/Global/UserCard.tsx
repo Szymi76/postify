@@ -1,5 +1,6 @@
 import React from "react";
 import Avatar from "./Avatar";
+import Link from "next/link";
 
 type UserCardProps = {
   name?: string | null;
