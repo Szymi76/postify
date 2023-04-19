@@ -1,12 +1,4 @@
-import {
-  DetailedHTMLProps,
-  HTMLAttributes,
-  LabelHTMLAttributes,
-  RefObject,
-  UIEvent,
-  forwardRef,
-  useState,
-} from "react";
+import { DetailedHTMLProps, HTMLAttributes, RefObject, UIEvent, forwardRef, useState } from "react";
 import { useOutsideClick } from "./useOutsideClick";
 
 export const useModal = (triggers?: RefObject<HTMLElement>[]) => {

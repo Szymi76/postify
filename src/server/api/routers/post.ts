@@ -45,7 +45,7 @@ export const postRouter = createTRPCRouter({
           data: {
             user: { connect: { id } },
             type: noti.someoneTaggedYou.type,
-            text: noti.someoneTaggedYou.text(ctx.session.user.name ?? "Ktoś"),
+            creator: { connect: { id: ctx.session.user.id } },
           },
         });
       });
