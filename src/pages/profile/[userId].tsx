@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import Profile from "~/components/Profile";
 import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
+import ScrollablePage from "~/layouts/ScrollablePage";
 
 const Page = () => {
   const router = useRouter();
@@ -11,9 +12,11 @@ const Page = () => {
   if (typeof userId != "string") return <h1>Użytkownik nie istnieje</h1>;
 
   return (
-    <div className="content-wrapper pt-10">
-      <Profile userId={userId} />
-    </div>
+    <ScrollablePage>
+      <div className="content-wrapper">
+        <Profile userId={userId} />
+      </div>
+    </ScrollablePage>
   );
 };
 

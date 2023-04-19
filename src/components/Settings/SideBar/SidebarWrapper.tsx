@@ -10,7 +10,8 @@ type SidebarWrapperProps = {
 const SidebarWrapper = (props: SidebarWrapperProps) => {
   const ref = useOutsideClick<HTMLDivElement>(() => props.onClose());
 
-  const height = `calc(100vh - ${HEADER_HEIGHT}px)`;
+  // const height = `calc(100vh - ${HEADER_HEIGHT}px)`;
+  const paddingTop = `${HEADER_HEIGHT}px`;
 
   return (
     <div
@@ -20,7 +21,7 @@ const SidebarWrapper = (props: SidebarWrapperProps) => {
           ? "md: fixed z-20 w-[95%] sm:w-sidebar-settings-open"
           : "flex w-sidebar-settings-closed flex-col items-center"
       }`}
-      style={{ top: HEADER_HEIGHT, left: 0, height }}
+      style={{ top: 0, left: 0, height: "100vh", paddingTop }}
     >
       {props.children}
     </div>

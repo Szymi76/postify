@@ -9,7 +9,7 @@ type WrapperProps = { children: React.ReactNode };
 export const Wrapper = (props: WrapperProps) => {
   // const height = `calc(100vh - ${HEADER_HEIGHT}px)`;
 
-  return <div className="flex bg-slate-100">{props.children}</div>;
+  return <div className="flex h-screen bg-slate-100">{props.children}</div>;
 };
 
 /*
@@ -24,14 +24,15 @@ type FormProps = HTMLFormProps;
 export const Form = (props: FormProps) => {
   const { className, ...formProps } = props;
 
-  const height = `calc(100vh - ${HEADER_HEIGHT}px)`;
+  // const height = `calc(100vh - ${HEADER_HEIGHT}px)`;
+  const paddingTop = `${HEADER_HEIGHT + 40}px`;
 
   return (
     <div className="flex-1 overflow-y-auto">
       <form
         {...formProps}
-        className="mx-auto flex h-full w-full max-w-3xl flex-col gap-5 px-5 py-8"
-        style={{ height }}
+        className="mx-auto flex h-screen w-full max-w-3xl flex-col gap-5 px-5 py-8"
+        style={{ paddingTop }}
       />
     </div>
   );

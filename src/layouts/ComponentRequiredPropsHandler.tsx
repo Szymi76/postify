@@ -11,6 +11,7 @@ export type PageComponentRequiredProps = {
   header?: "include";
   auth?: "for-all" | "only-authenticated" | "only-unauthenticated";
   bottomNavigation?: "not-include";
+  id?: string;
 };
 
 type ComponentRequiredPropsHandlerProps = {
@@ -29,6 +30,7 @@ const ComponentRequiredPropsHandler = (props: ComponentRequiredPropsHandlerProps
   const auth = requiredPageProps?.auth ?? "for-all";
   const includeHeader = Boolean(requiredPageProps?.header);
   const includeBottomNav = !Boolean(requiredPageProps?.bottomNavigation);
+  const id = requiredPageProps?.id ?? undefined;
 
   const redirectCurrentUserToSigninPage =
     auth == "only-authenticated" && status == "unauthenticated";
@@ -42,10 +44,17 @@ const ComponentRequiredPropsHandler = (props: ComponentRequiredPropsHandlerProps
   if (status == "loading") return <LoadingPage />;
   if (redirectCurrentUserToHomePage || redirectCurrentUserToSigninPage) return <LoadingPage />;
 
-  const paddingTop = includeHeader ? PAGE_PADDING_TOP_CLASS_NAME_WITH_HEADER : "pt-0";
+  const Y_PADDING = 40;
+  const paddingTop = includeHeader ? `${HEADER_HEIGHT + Y_PADDING}px` : "0px";
+  const paddingBottom = `${Y_PADDING}px`;
+  // const height = includeHeader ? `calc(100vh - ${HEADER_HEIGHT}px)` : "100vh";
 
   return (
-    <div className={`${paddingTop} bg-slate-100`}>
+    <div
+      id={id}
+      className="h-screen overflow-hidden bg-slate-100"
+      // style={{ paddingTop, paddingBottom }}
+    >
       {includeHeader && <Header />}
       <Component {...props.pageProps} />
       {/* {includeBottomNav && <BottomNavigation />} */}
