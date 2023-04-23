@@ -3,6 +3,7 @@
 // import { Modal, ModalContent, ModalFooter, ModalTitle, useModal } from "~/hooks/useModal";
 // import { api } from "~/utils/api";
 
+import CreatePostContainer from "~/components/CreatePostContainer/CreatePostContainer";
 import PostContainer from "~/components/PostContainer/PostContainer";
 import ScrollablePage from "~/layouts/ScrollablePage";
 
@@ -59,7 +60,8 @@ const Sandbox = () => {
   return (
     <ScrollablePage>
       <div className="content-wrapper">
-        <PostContainer postId="clgnxuzei0000v2j4nyi4um7c" fullSection={true} />
+        {/* <PostContainer postId="clgnxuzei0000v2j4nyi4um7c" fullSection={true} /> */}
+        <CreatePostContainer />
       </div>
     </ScrollablePage>
   );

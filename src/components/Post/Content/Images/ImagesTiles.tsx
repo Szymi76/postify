@@ -1,7 +1,11 @@
-type ImagesTilesProps = { images: string[]; singleTileClassName?: string };
+type ImagesTilesProps = {
+  images: string[];
+  singleTileClassName?: string;
+  wrapperClassName?: string;
+};
 const ImagesTiles = (props: ImagesTilesProps) => {
   return (
-    <div className="wrapperClassName grid grid-cols-2 gap-2">
+    <div className={props.wrapperClassName ?? "grid grid-cols-2 gap-2"}>
       {props.images.map((img, index) => {
         return (
           <div

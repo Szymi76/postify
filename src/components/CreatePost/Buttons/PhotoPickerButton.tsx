@@ -1,7 +1,7 @@
 import PhotoIcon from "@heroicons/react/24/outline/PhotoIcon";
 
-export type PhotoPickerActionButtonProps = { onPhotosChange: (files: File[]) => void };
-export const PhotoPickerActionButton = (props: PhotoPickerActionButtonProps) => {
+export type PhotoPickerButtonProps = { onPhotosChange: (files: File[]) => void };
+export const PhotoPickerButton = (props: PhotoPickerButtonProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       props.onPhotosChange([...e.target.files]);

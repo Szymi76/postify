@@ -1,6 +1,7 @@
-import Avatar from "../Global/Avatar";
+import React from "react";
+import { Avatar } from "../Global";
 
-export const CreatePostSkeleton = () => {
+const CreatePostContainerSkeleton = () => {
   return (
     <div className="layout mx-auto w-[95%] max-w-3xl">
       <div className="flex justify-between gap-5">
@@ -18,3 +19,5 @@ export const CreatePostSkeleton = () => {
     </div>
   );
 };
+
+export default CreatePostContainerSkeleton;

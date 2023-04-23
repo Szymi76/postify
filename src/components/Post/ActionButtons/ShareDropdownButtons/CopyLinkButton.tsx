@@ -1,18 +1,17 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React from "react";
+import useCopyToClipboard from "~/hooks/useCopyToClipboard";
 
 import LinkIcon from "@heroicons/react/24/outline/LinkIcon";
 import CheckIcon from "@heroicons/react/24/outline/CheckIcon";
-import useCopyToClipboard from "~/hooks/useCopyToClipboard";
-import { PAGES } from "~/constants";
 
-type CopyLinkButtonProps = { postId: string };
+type CopyLinkButtonProps = { href: string };
 const CopyLinkButton = (props: CopyLinkButtonProps) => {
   const { copied: copiedLink, copyToClipboard } = useCopyToClipboard();
 
   return (
     <div
       className="tooltip"
-      onClick={() => void copyToClipboard(PAGES.POST(props.postId))}
+      onClick={() => void copyToClipboard(props.href)}
       data-tip={copiedLink ? "Skopiowano link" : "Skopiuj link postu"}
     >
       {copiedLink ? (

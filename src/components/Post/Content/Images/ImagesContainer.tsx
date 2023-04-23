@@ -11,7 +11,9 @@ const ImagesContainer = (props: ImagesContainerProps) => {
   const limitedImages = showAll ? props.images : props.images.slice(0, 3);
 
   if (len == 0) return <></>;
-  if (len == 1 || len == 2 || len == 4) return <ImagesTiles images={props.images} />;
+  if (len == 1)
+    return <ImagesTiles images={props.images} wrapperClassName="grid grid-cols-1 gap-2" />;
+  if (len == 2 || len == 4) return <ImagesTiles images={props.images} />;
   if (len == 3) return <ImagesTiles images={props.images} singleTileClassName="last:col-span-2" />;
 
   return (

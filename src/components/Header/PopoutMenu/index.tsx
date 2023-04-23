@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { type User } from "@prisma/client";
 import React, { forwardRef } from "react";
 import BaseInformations from "./BaseInformations";
 import ArrowTopRightOnSquareIcon from "@heroicons/react/24/outline/ArrowTopRightOnSquareIcon";
@@ -17,7 +17,7 @@ const PopoutMenu = forwardRef<HTMLDivElement, PopoutMenuProps>((props, ref) => {
   return (
     <div
       ref={ref}
-      className="absolute top-16 -right-1 z-30 max-w-[275px] animate-scaling-in rounded-lg border border-slate-200 bg-white"
+      className="absolute top-16 -right-1 z-30 min-w-[275px] max-w-[275px] animate-scaling-in rounded-lg border border-slate-200 bg-white"
     >
       <BaseInformations user={props.user} />
       <ul className="flex flex-col gap-2 py-2 font-medium text-black">

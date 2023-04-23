@@ -1,18 +1,25 @@
-import { DetailedHTMLProps, HTMLAttributes, RefObject, UIEvent, forwardRef, useState } from "react";
+import {
+  type DetailedHTMLProps,
+  type HTMLAttributes,
+  type RefObject,
+  type UIEvent,
+  forwardRef,
+  useState,
+} from "react";
 import { useOutsideClick } from "./useOutsideClick";
 
-export const useModal = (triggers?: RefObject<HTMLElement>[]) => {
+export const useModal = (triggers?: RefObject<HTMLElement>[], onClose?: () => void) => {
   const [show, setShow] = useState(false);
 
   const close = () => setShow(false);
   const open = () => setShow(true);
   const toggle = () => setShow(!show);
 
-  const ref = useOutsideClick<HTMLLabelElement>(() => close(), triggers);
+  const ref = useOutsideClick<HTMLLabelElement>(() => (onClose ? onClose() : close()), triggers);
 
   const modalProps = {
     show,
-    onClose: close,
+    onClose: onClose ?? close,
     ref,
   };
 

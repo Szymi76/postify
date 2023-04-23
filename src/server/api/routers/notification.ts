@@ -45,4 +45,31 @@ export const notificationRouter = createTRPCRouter({
 
       await Promise.all(updatePromises);
     }),
+
+  getInfiniteNotifications: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().nullish(), // <-- "cursor" needs to exist, but can be any type
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { cursor } = input;
+      const items = await ctx.prisma.notification.findMany({
+        take: input.limit + 1, // get an extra item at the end which we'll use as next cursor
+        cursor: cursor ? { id: cursor } : undefined,
+        where: { userId: ctx.session.user.id, seenAt: null },
+        include: { creator: true },
+        orderBy: { createdAt: "desc" },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > input.limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.id;
+      }
+      return {
+        items,
+        nextCursor,
+      };
+    }),
 });

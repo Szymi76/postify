@@ -1,13 +1,13 @@
 import FaceSmileIcon from "@heroicons/react/24/outline/FaceSmileIcon";
-import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
+import EmojiPicker, { type EmojiClickData } from "emoji-picker-react";
 import { useRef, useState } from "react";
 import { useKeyDown } from "~/hooks/useKeyDown";
 import { useOutsideClick } from "~/hooks/useOutsideClick";
 
-export type EmojiPickerActionButtonProps = {
+export type EmojiPickerButtonProps = {
   onEmojiClick: (emoji: EmojiClickData, event: MouseEvent) => void;
 };
-export const EmojiPickerActionButton = (props: EmojiPickerActionButtonProps) => {
+export const EmojiPickerButton = (props: EmojiPickerButtonProps) => {
   const [show, setShow] = useState(false);
 
   const buttonRef = useRef<HTMLButtonElement>(null);

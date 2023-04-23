@@ -5,5 +5,15 @@ import Alert from "./Alert";
 import FileInput2 from "./FileInput2";
 import UserCard from "./UserCard";
 import NotificationCard from "./NotificationCard";
+import QuestionMarkAsTooltip from "./QuestionMarkAsTooltip";
 
-export { Avatar, LoadingButton, FileInput, Alert, FileInput2, UserCard, NotificationCard };
+export {
+  Avatar,
+  LoadingButton,
+  FileInput,
+  Alert,
+  FileInput2,
+  UserCard,
+  NotificationCard,
+  QuestionMarkAsTooltip,
+};

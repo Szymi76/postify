@@ -5,10 +5,13 @@ import { timeFromNow } from "~/utils/other";
 import Link from "next/link";
 import { PAGES } from "~/constants";
 import WidgetSkeleton from "../WidgetSkeleton";
+import { useSession } from "next-auth/react";
 
 const FriendsWidget = () => {
+  const currentUser = useSession().data?.user;
   const { data: friends, isLoading } = api.friendship.friendsList.useQuery({ limit: 5 });
 
+  if (!currentUser) return <></>;
   if (isLoading) return <WidgetSkeleton />;
 
   const zeroFriends = friends?.length == 0 && !isLoading;

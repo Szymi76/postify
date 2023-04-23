@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
-import CreatePost from "~/components/CreatePost";
-import Post from "~/components/Post";
-import PostSkeleton from "~/components/Post/PostSkeleton";
+import CreatePost from "~/components/CreatePost/CreatePostContainer";
+import Post from "~/components/Post/PostContainer";
+import PostSkeleton from "~/components/Post/PostContainerSkeleton";
 import FriendsWidget from "~/components/Widgets/FriendsWidget";
 import NotificationsWidget from "~/components/Widgets/NotificationsWidget";
 import { useOnEndOffScroll } from "~/hooks/useOnEndOffScroll";
-import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
+import { type PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
 import ScrollablePage from "~/layouts/ScrollablePage";
 import { api } from "~/utils/api";
 
@@ -27,7 +27,7 @@ const Home = () => {
         <div className="flex flex-col items-center gap-10 pb-10">
           <CreatePost />
           {postsIds ? (
-            postsIds.map((postId) => <Post key={postId} id={postId} fullSection={false} />)
+            postsIds.map((postId) => <Post key={postId} postId={postId} fullSection={false} />)
           ) : (
             <>
               <PostSkeleton />

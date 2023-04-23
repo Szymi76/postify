@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
-import Post from "~/components/Post";
-import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
+import Post from "~/components/Post/PostContainer";
+import { type PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
 import ScrollablePage from "~/layouts/ScrollablePage";
 
 const Page = () => {
@@ -14,7 +14,7 @@ const Page = () => {
   return (
     <ScrollablePage>
       <div className="content-wrapper">
-        <Post id={postId} fullSection={true} />
+        <Post postId={postId} fullSection={true} />
       </div>
     </ScrollablePage>
   );

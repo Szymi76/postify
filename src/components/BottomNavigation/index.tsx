@@ -2,12 +2,14 @@ import React, { forwardRef } from "react";
 import HomeIcon from "@heroicons/react/24/outline/HomeIcon";
 import MagnifyingGlassIcon from "@heroicons/react/24/outline/MagnifyingGlassIcon";
 import UserIcon from "@heroicons/react/24/outline/UserIcon";
+import BellIcon from "@heroicons/react/24/outline/BellIcon";
 import Link from "next/link";
 import { PAGES } from "~/constants";
 import { useSession } from "next-auth/react";
-import { useSearch } from "~/store";
+import { useBottomNav, useSearch } from "~/store";
 
 const BottomNavigation = forwardRef<HTMLDivElement>((props, ref) => {
+  const changeNotificationsShowTo = useBottomNav((state) => state.changeNotificationsShowTo);
   const { isOpen, setOpen, forceClose } = useSearch();
   const currentUser = useSession().data?.user;
 
@@ -36,6 +38,9 @@ const BottomNavigation = forwardRef<HTMLDivElement>((props, ref) => {
           </Link>
         </button>
       )}
+      <button onClick={() => changeNotificationsShowTo(true)}>
+        <BellIcon className="h-7" />
+      </button>
     </div>
   );
 });
