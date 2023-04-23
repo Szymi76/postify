@@ -1,23 +1,29 @@
 import React from "react";
+import { Modal, ModalTitle, ModalFooter } from "../../../hooks/useSetupModal";
+import { useGlobalModals } from "~/store/useGlobalModals";
 import { LoadingButton } from "~/components/Global";
-import { ModalFooter, ModalTitle } from "~/hooks/useModal";
 import { api } from "~/utils/api";
 
-type DeletePostModalContentContainerProps = { postId: string; closeModal: () => void };
-const DeletePostModalContentContainer = (props: DeletePostModalContentContainerProps) => {
+const DeletePostModal = () => {
+  const { id, setId } = useGlobalModals((state) => state.deletePostModal);
   const { mutateAsync: deletePost, isLoading } = api.post.delete.useMutation();
   const utils = api.useContext();
 
+  if (!id) return <></>;
+
+  const closeModal = () => setId(null);
+
   const handleDeletePost = async () => {
-    await deletePost({ postId: props.postId });
-    await utils.post.getPostById.refetch({ postId: props.postId });
+    await deletePost({ postId: id });
+    await utils.post.getPostById.refetch({ postId: id });
+    closeModal();
   };
 
   return (
-    <>
+    <Modal onClose={closeModal}>
       <ModalTitle>Czy na pewno chcesz usunąć ten post?</ModalTitle>
       <ModalFooter>
-        <button className="btn-secondary btn-sm btn" onClick={props.closeModal}>
+        <button className="btn-secondary btn-sm btn" onClick={closeModal}>
           Cofnij
         </button>
         <LoadingButton
@@ -28,8 +34,8 @@ const DeletePostModalContentContainer = (props: DeletePostModalContentContainerP
           Usuń
         </LoadingButton>
       </ModalFooter>
-    </>
+    </Modal>
   );
 };
 
-export default DeletePostModalContentContainer;
+export default DeletePostModal;

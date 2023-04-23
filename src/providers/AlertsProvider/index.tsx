@@ -2,8 +2,8 @@ import React from "react";
 import { useAlert } from "~/store";
 import SingleAlert from "./SingleAlert";
 
-type AlertWrapperProps = { children: React.ReactNode };
-const AlertWrapper = (props: AlertWrapperProps) => {
+type AlertProviderProps = { children: React.ReactNode };
+const AlertProvider = (props: AlertProviderProps) => {
   const alerts = useAlert((state) => state.alerts);
 
   return (
@@ -18,4 +18,4 @@ const AlertWrapper = (props: AlertWrapperProps) => {
   );
 };
 
-export default AlertWrapper;
+export default AlertProvider;

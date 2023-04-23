@@ -2,7 +2,7 @@ import React from "react";
 
 const WidgetSkeleton = () => {
   return (
-    <div className="flex h-min w-[300px] animate-pulse flex-col gap-2 rounded-md bg-white p-3">
+    <div className="hidden h-min w-[300px] animate-pulse flex-col gap-2 rounded-md bg-white p-3 2xl:flex">
       <div className="mb-3 h-8 w-3/6 rounded-md bg-gray-300"></div>
 
       {/* CARD 1 */}

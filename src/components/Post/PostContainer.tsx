@@ -1,7 +1,7 @@
 import React from "react";
 import { useSession } from "next-auth/react";
 import { PAGES } from "~/constants";
-import { ReactChild } from "~/types";
+import { type ReactChild } from "~/types";
 import { api } from "~/utils/api";
 import { PostContext } from "./PostContext";
 
@@ -20,7 +20,9 @@ const PostContainer = (props: PostContainerProps) => {
   const { data: post, isLoading } = api.post.getPostById.useQuery({ postId });
 
   if (isLoading) return <PostContainerSkeleton />;
-  if (!post && !isLoading) return <h1>Post nie istnieje</h1>;
+  if (!post && !isLoading) {
+    return fullSection ? <h1>Post nie istnieje</h1> : <></>;
+  }
 
   return (
     <PostContext.Provider value={{ post, fullSection }}>

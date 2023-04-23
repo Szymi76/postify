@@ -1,23 +1,23 @@
 import React, { useRef } from "react";
-import { User } from "@prisma/client";
+import { type User } from "@prisma/client";
 import { PAGES } from "~/constants";
 import { usePostContext } from "../PostContext";
 
 import { Avatar } from "../../Global";
-import { useModal, Modal } from "~/hooks/useModal";
 import LikesTextInfo from "./LikesTextInfo";
 import Link from "next/link";
-import LikesUsersListModalContentContainer from "../ModalsContents/LikesUsersListModalContentContainer";
+import { useGlobalModals } from "~/store/useGlobalModals";
 
 const LikesDetailsContainer = () => {
   const { post } = usePostContext();
+  const { setId } = useGlobalModals((state) => state.postLikesModal);
   const modalTriggerRef = useRef<HTMLDivElement>(null);
-  const { open, modalProps } = useModal([modalTriggerRef]);
 
   const users = post.likes.map((user) => user.user);
   const limitedUsers = users.slice(0, 2);
   const extraLikesCount = users.length - limitedUsers.length;
-  const usersIds = users.map((user) => user.id);
+
+  const openLikesModal = () => setId(post.id);
 
   return (
     <div className="flex items-center">
@@ -31,7 +31,7 @@ const LikesDetailsContainer = () => {
             ref={modalTriggerRef}
             className="tooltip"
             data-tip="Pokaż więcej osób"
-            onClick={open}
+            onClick={openLikesModal}
           >
             <UserAvatarPlaceholder extraLikesCount={extraLikesCount} />
           </div>
@@ -39,10 +39,6 @@ const LikesDetailsContainer = () => {
       </div>
 
       <LikesTextInfo likesCount={users.length} />
-
-      <Modal {...modalProps}>
-        <LikesUsersListModalContentContainer usersIds={usersIds} />
-      </Modal>
     </div>
   );
 };

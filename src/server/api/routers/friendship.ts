@@ -199,4 +199,37 @@ export const friendshipRouter = createTRPCRouter({
 
       return friendship;
     }),
+
+  getInfiniteFriends: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().nullish(), // <-- "cursor" needs to exist, but can be any type
+        userId: z.string().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const userId = input.userId ?? ctx.session.user.id;
+
+      const { cursor } = input;
+      const items = await ctx.prisma.friendship.findMany({
+        take: input.limit + 1, // get an extra item at the end which we'll use as next cursor
+        cursor: cursor ? { id: cursor } : undefined,
+        where: {
+          OR: [{ senderId: userId }, { receiverId: userId }],
+          status: "accepted",
+        },
+        include: { sender: true, receiver: true },
+        orderBy: { createdAt: "desc" },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > input.limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.id;
+      }
+      return {
+        items,
+        nextCursor,
+      };
+    }),
 });

@@ -26,10 +26,10 @@ const PopoutMenu = forwardRef<HTMLDivElement, PopoutMenuProps>((props, ref) => {
           Twój profil
         </ActionListItem>
 
-        <ActionListItem onClick={() => void router.push(`/profil/${props.user.id!}`)}>
+        {/* <ActionListItem onClick={() => void router.push(`/profil/${props.user.id!}`)}>
           <SunIcon className="h-7" />
           Zmień motyw
-        </ActionListItem>
+        </ActionListItem> */}
 
         <ActionListItem onClick={() => void router.push(PAGES.SETTINGS.ACCOUNT)}>
           <Cog6ToothIcon className="h-7" />

@@ -7,8 +7,10 @@ import { api } from "../utils/api";
 
 import "../styles/globals.css";
 import { CompleteTheConfiguration } from "~/layouts/CompleteTheConfigurations";
-import AlertWrapper from "~/layouts/AlertWrapper";
 import ComponentRequiredPropsHandler from "~/layouts/ComponentRequiredPropsHandler";
+
+import AlertsProvider from "~/providers/AlertsProvider";
+import GlobalModalsProvider from "~/providers/GlobalModalsProvider";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -17,9 +19,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <CompleteTheConfiguration>
-        <AlertWrapper>
-          <ComponentRequiredPropsHandler pageProps={pageProps} Component={Component} />
-        </AlertWrapper>
+        <GlobalModalsProvider>
+          <AlertsProvider>
+            <ComponentRequiredPropsHandler pageProps={pageProps} Component={Component} />
+          </AlertsProvider>
+        </GlobalModalsProvider>
       </CompleteTheConfiguration>
     </SessionProvider>
   );

@@ -5,21 +5,21 @@ import { PAGES } from "~/constants";
 import { timeFromNow } from "~/utils/other";
 
 import { UserCard } from "~/components/Global";
-import { Modal, useModal } from "~/hooks/useModal";
 import { Dropdown, DropdownItem, useDropdown } from "~/hooks/useDropdown";
 import Link from "next/link";
 import EllipsisHorizontalIcon from "@heroicons/react/24/outline/EllipsisHorizontalIcon";
 import LinkToAuthorProfileButton from "./DropdownButtons/LinkToAuthorProfileButton";
 import DeletePostButton from "./DropdownButtons/DeletePostButton";
-import DeletePostModalContentContainer from "../ModalsContents/DeletePostModalContentContainer";
+import { useGlobalModals } from "~/store/useGlobalModals";
 
 const HeaderContainer = () => {
   const { post } = usePostContext();
   const currentUser = useSession().data?.user;
   const dropdownTriggerRef = useRef<HTMLButtonElement>(null);
-  const deleteModalTriggerRef = useRef<HTMLDivElement>(null);
   const { toggle: toggleDropdown, dropdownProps } = useDropdown([dropdownTriggerRef]);
-  const { open, close, modalProps } = useModal([deleteModalTriggerRef]);
+  const { setId } = useGlobalModals((state) => state.deletePostModal);
+
+  const openDeleteModal = () => setId(post.id);
 
   const isCurrentUserAuthor = Boolean(post.author.id == currentUser?.id && currentUser?.id);
 
@@ -46,14 +46,10 @@ const HeaderContainer = () => {
           )}
 
           {isCurrentUserAuthor && (
-            <DropdownItem ref={deleteModalTriggerRef} onClick={open}>
+            <DropdownItem onClick={openDeleteModal}>
               <DeletePostButton />
             </DropdownItem>
           )}
-
-          <Modal {...modalProps}>
-            <DeletePostModalContentContainer postId={post.id} closeModal={close} />
-          </Modal>
         </Dropdown>
       </div>
     </div>

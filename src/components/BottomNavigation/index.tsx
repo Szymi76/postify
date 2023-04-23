@@ -6,10 +6,11 @@ import BellIcon from "@heroicons/react/24/outline/BellIcon";
 import Link from "next/link";
 import { PAGES } from "~/constants";
 import { useSession } from "next-auth/react";
-import { useBottomNav, useSearch } from "~/store";
+import { useSearch } from "~/store";
+import { useGlobalModals } from "~/store/useGlobalModals";
 
 const BottomNavigation = forwardRef<HTMLDivElement>((props, ref) => {
-  const changeNotificationsShowTo = useBottomNav((state) => state.changeNotificationsShowTo);
+  const { open } = useGlobalModals((state) => state.notificationsModal);
   const { isOpen, setOpen, forceClose } = useSearch();
   const currentUser = useSession().data?.user;
 
@@ -38,7 +39,7 @@ const BottomNavigation = forwardRef<HTMLDivElement>((props, ref) => {
           </Link>
         </button>
       )}
-      <button onClick={() => changeNotificationsShowTo(true)}>
+      <button onClick={open}>
         <BellIcon className="h-7" />
       </button>
     </div>
