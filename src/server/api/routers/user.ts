@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../../../server/api/trpc";
-import { User } from "@prisma/client";
+import { type User } from "@prisma/client";
 
 export const userRouter = createTRPCRouter({
   /**
@@ -68,7 +68,7 @@ export const userRouter = createTRPCRouter({
         },
       });
 
-      return input.omitMe ? users.filter((user) => user.id != ctx.session.user.id) : users;
+      return input.omitMe ? users.filter(user => user.id != ctx.session.user.id) : users;
     }),
 
   /**
@@ -77,9 +77,9 @@ export const userRouter = createTRPCRouter({
   getByIds: publicProcedure
     .input(z.object({ ids: z.string().array() }))
     .query(async ({ ctx, input }) => {
-      const usersPromises = input.ids.map((id) => ctx.prisma.user.findUnique({ where: { id } }));
+      const usersPromises = input.ids.map(id => ctx.prisma.user.findUnique({ where: { id } }));
       const users = await Promise.all(usersPromises);
-      const notNullUsers = users.filter((user) => user != null) as User[];
+      const notNullUsers = users.filter(user => user != null) as User[];
 
       return notNullUsers;
     }),
@@ -100,7 +100,12 @@ export const userRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      // const limit = input.limit ?? 50;
+      if (typeof input.query == "string" && input.query.trim().length == 0) {
+        return {
+          items: [],
+        };
+      }
+
       const { cursor } = input;
       const items = await ctx.prisma.user.findMany({
         take: input.limit + 1, // get an extra item at the end which we'll use as next cursor

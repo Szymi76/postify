@@ -1,4 +1,4 @@
-import { useAlert } from "./useAlert";
 import { useSearch } from "./useSearch";
+import { useRecentlySearched } from "./useRecentlySearched";
 
-export { useAlert, useSearch };
+export { useSearch, useRecentlySearched };

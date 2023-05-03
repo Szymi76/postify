@@ -2,8 +2,20 @@ import QuestionMarkCircleIcon from "@heroicons/react/24/outline/QuestionMarkCirc
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { FileInput, LoadingButton } from "~/components/Global";
-import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
+import styled from "styled-components";
+import {
+  Button,
+  Description,
+  FileInput,
+  Flex,
+  Headline,
+  InputField,
+  LoadingButton,
+  Paper,
+  QuestionMarkTooltip,
+  TextInput,
+} from "~/components/Shared";
+import { type PageLayout } from "~/layouts/PageLayoutHandler";
 import { api } from "~/utils/api";
 import { uploadFile } from "~/utils/other";
 
@@ -47,6 +59,12 @@ const CompleteTheConfiguration = () => {
     setData({ ...data, name: newName });
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length == 0) return;
+    setData({ ...data, image: files[0]! });
+  };
+
   useEffect(() => {
     if (Boolean(currentUser?.name)) void router.push({ pathname: "/" });
     else if (status == "unauthenticated") void router.push({ pathname: "/auth/signin" });
@@ -54,64 +72,58 @@ const CompleteTheConfiguration = () => {
   }, [currentUser, status]);
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-slate-100">
-      <div className="layout relative">
-        <h3 className="text-xl font-medium">Dokończ konfiguracje konta</h3>
-        <p className="text-sm text-gray-500">Wypełnij wymagane pola, aby ukończyć logowanie.</p>
-        <div className="mt-5 flex flex-col gap-3">
-          <div className="flex flex-col gap-1">
-            <label>
-              <span className="label-text">Twoja widoczna nazwa *</span>
-            </label>
-            <input
-              className="input-secondary input"
-              type="text"
+    <CompleteTheConfigurationWrapper>
+      <Headline>Dokończ konfiguracje konta</Headline>
+      <Description>Wypełnij wymagane pola, aby ukończyć logowanie.</Description>
+      <Flex direction="column" gap="xl" style={{ marginTop: 16 }}>
+        <Flex direction="column" gap="sm">
+          <InputField label="Twoja widoczna nazwa *" error={nameError.text}>
+            <TextInput
               minLength={3}
               value={data.name}
               onChange={handleNameChange}
+              style={{ maxWidth: 325 }}
             />
-            <label>
-              {nameError.show && (
-                <span className="label-text-alt text-error">{nameError.text}</span>
-              )}
-            </label>
-          </div>
-          <label>
-            <span className="label-text">Zdjęcie profilowe</span>
-          </label>
+          </InputField>
+        </Flex>
+        <InputField label="Zdjęcie profilowe">
           <FileInput
-            file={data.image}
-            onChange={(file) => file && setData({ ...data, image: file })}
+            previewFile={data.image ?? undefined}
+            onChange={handleImageChange}
             onClear={() => setData({ ...data, image: null })}
-            avatarText={currentUser?.name ?? undefined}
+            placeholderText={currentUser?.name ?? undefined}
           />
-          <div className="mt-5 flex justify-end gap-1">
-            <button className="btn-primary btn-sm btn" onClick={() => void signOut()}>
-              Wyloguj się
-            </button>
-            <LoadingButton
-              loading={isLoading}
-              className="btn-primary btn-sm btn"
-              onClick={() => void handleUpdateUser()}
-            >
-              Zapisz
-            </LoadingButton>
-          </div>
-        </div>
-        <div
-          className="tooltip tooltip-right absolute bottom-4 left-4"
-          data-tip="* - pole jest wymagane"
-        >
-          <QuestionMarkCircleIcon className="h-6 text-gray-600" />
-        </div>
-      </div>
-    </div>
+        </InputField>
+        <Flex justify="flex-end" gap="md" style={{ marginTop: 16 }}>
+          <Button color="secondary" onClick={() => void signOut()}>
+            Wyloguj się
+          </Button>
+          <LoadingButton isLoading={isLoading} onClick={() => void handleUpdateUser()}>
+            Zapisz
+          </LoadingButton>
+        </Flex>
+      </Flex>
+      <QuestionMarkTooltip
+        id="CompleteTheConfiguratio"
+        content="* - pole jest wymagane"
+        bottom={16}
+        left={16}
+      />
+    </CompleteTheConfigurationWrapper>
   );
 };
 
-const requiredPageProps: PageComponentRequiredProps = {
+const pageLayout: PageLayout = {
   auth: "only-authenticated",
+  header: false,
 };
 
-CompleteTheConfiguration.requiredPageProps = requiredPageProps;
+CompleteTheConfiguration.pageLayout = pageLayout;
 export default CompleteTheConfiguration;
+
+const CompleteTheConfigurationWrapper = styled(Paper)`
+  margin: 20vh auto;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+`;

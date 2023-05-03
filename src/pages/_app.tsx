@@ -1,16 +1,23 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 
-import { api } from "../utils/api";
+import { api } from "~/utils/api";
 
-import "../styles/globals.css";
-import { CompleteTheConfiguration } from "~/layouts/CompleteTheConfigurations";
-import ComponentRequiredPropsHandler from "~/layouts/ComponentRequiredPropsHandler";
+import "~/styles/globals.css";
+import "react-tooltip/dist/react-tooltip.css";
 
-import AlertsProvider from "~/providers/AlertsProvider";
-import GlobalModalsProvider from "~/providers/GlobalModalsProvider";
+import { theme } from "~/styles/theme";
+import {
+  RootLayout,
+  AwaitForAuthLayout,
+  PageLayoutHandler,
+  CompleteRequiredUserData,
+} from "../layouts";
+
+import GlobalModalsProvider from "~/providers/GlobalModalsProvider/GlobalModalsProvider";
+import AlertsProvider from "~/providers/AlertsProvider/AlertsProvider";
+import CustomThemeProvider from "~/providers/CustomThemeProvider";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -18,13 +25,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <CompleteTheConfiguration>
-        <GlobalModalsProvider>
-          <AlertsProvider>
-            <ComponentRequiredPropsHandler pageProps={pageProps} Component={Component} />
-          </AlertsProvider>
-        </GlobalModalsProvider>
-      </CompleteTheConfiguration>
+      <CustomThemeProvider>
+        <AwaitForAuthLayout>
+          <RootLayout>
+            <CompleteRequiredUserData>
+              <PageLayoutHandler pageProps={pageProps} Component={Component} />
+            </CompleteRequiredUserData>
+            <GlobalModalsProvider />
+            <AlertsProvider />
+          </RootLayout>
+        </AwaitForAuthLayout>
+      </CustomThemeProvider>
     </SessionProvider>
   );
 };

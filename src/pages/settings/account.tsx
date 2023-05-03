@@ -1,24 +1,24 @@
 import React from "react";
-import SideBar from "~/components/Settings/SideBar";
-import { PAGES } from "~/constants";
-import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
-import * as Settings from "~/components/Settings/Layouts";
+import SideBar from "~/components/Layouts/Settings/SideBar/SidebarContainer";
+import { pages } from "~/constants";
+import { type PageLayout } from "~/layouts/PageLayoutHandler";
+import * as Settings from "~/components/Layouts/Settings/Layouts";
 
-import AccountForm from "~/components/Settings/Forms/AccountForm";
+import AccountForm from "~/components/Layouts/Settings/Forms/AccountFormContainer";
 
 const AccountSettings = () => {
   return (
     <Settings.Wrapper>
-      <SideBar currentPageHref={PAGES.SETTINGS.ACCOUNT} />
+      <SideBar currentPageHref={pages.settings.account} />
       <AccountForm />
     </Settings.Wrapper>
   );
 };
 
-const requiredPageProps: PageComponentRequiredProps = {
+const pageLayout: PageLayout = {
   auth: "only-authenticated",
-  header: "include",
+  scrollable: false,
 };
 
-AccountSettings.requiredPageProps = requiredPageProps;
+AccountSettings.pageLayout = pageLayout;
 export default AccountSettings;

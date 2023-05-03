@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const useHover = <T extends HTMLElement>() => {
+export const useHover = <T extends HTMLElement>() => {
   const [isHovering, setIsHovering] = useState(false);
   const ref = useRef<T>(null);
 
@@ -19,5 +19,3 @@ const useHover = <T extends HTMLElement>() => {
 
   return [ref, isHovering] as const;
 };
-
-export default useHover;

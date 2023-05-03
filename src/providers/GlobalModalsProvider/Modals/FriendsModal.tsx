@@ -1,25 +1,17 @@
 import React, { useRef } from "react";
-import { type User } from "@prisma/client";
-import {
-  ModalContent,
-  ModalTitle,
-  Modal,
-  ModalFooter,
-  ModalScrollableList,
-} from "~/hooks/useSetupModal";
-import { useInfiniteFriends } from "../../../components/Post/hooks";
+import { useInfiniteFriends } from "~/hooks/useInfiniteQueryHelpers";
 import { useOnEndOffScroll } from "~/hooks/useOnEndOffScroll";
-
-import Link from "next/link";
-import { UserCard } from "~/components/Global";
-import { PAGES } from "~/constants";
-import { useGlobalModals } from "~/store/useGlobalModals";
+import * as Modal from "~/components/Utils/Modal";
+import { Button, List, ListItem, UserCard } from "~/components/Shared";
+import { pages } from "~/constants";
+import { useGlobalModals } from "../useGlobalModals";
 import { timeFromNow } from "~/utils/other";
+import Link from "next/link";
 
 const FriendsModal = () => {
-  const { id, setId } = useGlobalModals((state) => state.friendsModal);
+  const { id, setId } = useGlobalModals(state => state.friendsModal);
   const { friends, fetchNextPage } = useInfiniteFriends();
-  const listRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   useOnEndOffScroll(listRef, () => void fetchNextPage(), { offsetBottom: 100 });
 
   const close = () => setId(null);
@@ -27,36 +19,34 @@ const FriendsModal = () => {
   if (!id) return <></>;
 
   return (
-    <Modal onClose={close}>
-      <ModalTitle>Znajomi</ModalTitle>
-      <ModalContent>
-        <ModalScrollableList ref={listRef}>
-          {friends.map((friend) => (
-            <UserCardAsLink key={friend.id} friend={friend} href={PAGES.PROFILE(friend.id)} />
-          ))}
-        </ModalScrollableList>
-      </ModalContent>
-      <ModalFooter>
-        <button className="btn-secondary btn-sm btn" onClick={close}>
-          Zamknij
-        </button>
-      </ModalFooter>
-    </Modal>
+    <Modal.Wrapper>
+      <Modal.Box onClose={close}>
+        <Modal.Title>Znajomi</Modal.Title>
+        <Modal.Content>
+          <List ref={listRef}>
+            {friends.map(friend => {
+              return (
+                <ListItem key={friend.id}>
+                  <Link href={pages.profile(friend.id)}>
+                    <UserCard
+                      src={friend.image}
+                      name={friend.name}
+                      secondaryText={timeFromNow(friend.lastActive ?? new Date())}
+                    />
+                  </Link>
+                </ListItem>
+              );
+            })}
+          </List>
+        </Modal.Content>
+        <Modal.Footer>
+          <Button color="secondary" onClick={close}>
+            Zamknij
+          </Button>
+        </Modal.Footer>
+      </Modal.Box>
+    </Modal.Wrapper>
   );
 };
 
 export default FriendsModal;
-
-type UserCardAsLinkProps = { friend: User; href: string };
-const UserCardAsLink = (props: UserCardAsLinkProps) => {
-  return (
-    <Link key={props.friend.id} href={props.href}>
-      <UserCard
-        avatarUrl={props.friend.image}
-        name={props.friend.name}
-        secondaryText={timeFromNow(props.friend.lastActive ?? new Date())}
-        className="py-2"
-      />
-    </Link>
-  );
-};

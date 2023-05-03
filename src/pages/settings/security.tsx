@@ -1,24 +1,26 @@
 import React from "react";
-import * as Settings from "~/components/Settings/Layouts";
-import SideBar from "~/components/Settings/SideBar";
-import { PAGES } from "~/constants";
-import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
+import * as Settings from "~/components/Layouts/Settings/Layouts";
+import SideBar from "~/components/Layouts/Settings/SideBar/SidebarContainer";
+import { pages } from "~/constants";
+import { type PageLayout } from "~/layouts/PageLayoutHandler";
 
 const SecuritySettings = () => {
   return (
     <Settings.Wrapper>
-      <SideBar currentPageHref={PAGES.SETTINGS.SECURITY} />
-      <Settings.Form>
-        <Settings.Title>Zabezpieczenia</Settings.Title>
-      </Settings.Form>
+      <SideBar currentPageHref={pages.settings.security} />
+      <Settings.FormWrapper>
+        <Settings.FormContainer>
+          <Settings.FormTitle>Zabezpieczenia</Settings.FormTitle>
+        </Settings.FormContainer>
+      </Settings.FormWrapper>
     </Settings.Wrapper>
   );
 };
 
-const requiredPageProps: PageComponentRequiredProps = {
+const pageLayout: PageLayout = {
   auth: "only-authenticated",
-  header: "include",
+  scrollable: false,
 };
 
-SecuritySettings.requiredPageProps = requiredPageProps;
+SecuritySettings.pageLayout = pageLayout;
 export default SecuritySettings;

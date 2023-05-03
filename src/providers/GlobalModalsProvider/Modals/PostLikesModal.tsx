@@ -1,60 +1,45 @@
 import React, { useRef } from "react";
-import { type User } from "@prisma/client";
-import {
-  ModalContent,
-  ModalTitle,
-  Modal,
-  ModalFooter,
-  ModalScrollableList,
-} from "~/hooks/useSetupModal";
-import { useInfiniteLikes } from "../../../components/Post/hooks";
+import { useInfiniteLikes } from "~/hooks/useInfiniteQueryHelpers";
 import { useOnEndOffScroll } from "~/hooks/useOnEndOffScroll";
-
+import * as Modal from "~/components/Utils/Modal";
+import { Button, List, ListItem, UserCard } from "~/components/Shared";
+import { pages } from "~/constants";
+import { useGlobalModals } from "../useGlobalModals";
 import Link from "next/link";
-import { UserCard } from "~/components/Global";
-import { PAGES } from "~/constants";
-import { useGlobalModals } from "~/store/useGlobalModals";
 
 const PostLikesModal = () => {
-  const { id, setId } = useGlobalModals((state) => state.postLikesModal);
+  const { id, setId } = useGlobalModals(state => state.postLikesModal);
   const { likes, fetchNextPage } = useInfiniteLikes(id);
-  const listRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   useOnEndOffScroll(listRef, () => void fetchNextPage(), { offsetBottom: 100 });
 
   const close = () => setId(null);
 
-  if (!id) return <></>;
-
   return (
-    <Modal onClose={close}>
-      <ModalTitle>Lista osób, które polubiła ten post</ModalTitle>
-      <ModalContent>
-        <ModalScrollableList ref={listRef}>
-          {likes.map((like) => (
-            <UserCardAsLink key={like.id} user={like.user} href={PAGES.PROFILE(like.user.id)} />
-          ))}
-        </ModalScrollableList>
-      </ModalContent>
-      <ModalFooter>
-        <button className="btn-secondary btn-sm btn" onClick={close}>
-          Zamknij
-        </button>
-      </ModalFooter>
-    </Modal>
+    <Modal.Wrapper>
+      <Modal.Box onClose={close}>
+        <Modal.Title>Lista osób, które polubiła ten post</Modal.Title>
+        <Modal.Content>
+          <List ref={listRef}>
+            {likes.map(like => {
+              return (
+                <ListItem key={like.user.id}>
+                  <Link href={pages.profile(like.user.id)}>
+                    <UserCard src={like.user.image} name={like.user.name} />
+                  </Link>
+                </ListItem>
+              );
+            })}
+          </List>
+        </Modal.Content>
+        <Modal.Footer>
+          <Button color="secondary" onClick={close}>
+            Zamknij
+          </Button>
+        </Modal.Footer>
+      </Modal.Box>
+    </Modal.Wrapper>
   );
 };
 
 export default PostLikesModal;
-
-type UserCardAsLinkProps = { user: User; href: string };
-const UserCardAsLink = (props: UserCardAsLinkProps) => {
-  return (
-    <Link href={props.href}>
-      <UserCard
-        name={props.user.name}
-        avatarUrl={props.user.image}
-        className="border-b border-slate-200 py-2 duration-100 hover:bg-gray-100"
-      />
-    </Link>
-  );
-};

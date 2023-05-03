@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 type Options = { timeout?: number };
-const useCopyToClipboard = (options?: Options) => {
+export const useCopyToClipboard = (options?: Options) => {
   const [copied, setCopied] = useState(false);
 
   const timeout = options?.timeout ?? 2500;
@@ -21,5 +21,3 @@ const useCopyToClipboard = (options?: Options) => {
 
   return { copied, copyToClipboard } as const;
 };
-
-export default useCopyToClipboard;

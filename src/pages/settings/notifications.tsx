@@ -1,24 +1,26 @@
 import React from "react";
-import * as Settings from "~/components/Settings/Layouts";
-import SideBar from "~/components/Settings/SideBar";
-import { PAGES } from "~/constants";
-import { PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
+import * as Settings from "~/components/Layouts/Settings/Layouts";
+import SideBar from "~/components/Layouts/Settings/SideBar/SidebarContainer";
+import { pages } from "~/constants";
+import { type PageLayout } from "~/layouts/PageLayoutHandler";
 
 const NotificationsSettings = () => {
   return (
     <Settings.Wrapper>
-      <SideBar currentPageHref={PAGES.SETTINGS.NOTIFICATIONS} />
-      <Settings.Form>
-        <Settings.Title>Powiadomienia</Settings.Title>
-      </Settings.Form>
+      <SideBar currentPageHref={pages.settings.notifications} />
+      <Settings.FormWrapper>
+        <Settings.FormContainer>
+          <Settings.FormTitle>Powiadomienia</Settings.FormTitle>
+        </Settings.FormContainer>
+      </Settings.FormWrapper>
     </Settings.Wrapper>
   );
 };
 
-const requiredPageProps: PageComponentRequiredProps = {
+const pageLayout: PageLayout = {
   auth: "only-authenticated",
-  header: "include",
+  scrollable: false,
 };
 
-NotificationsSettings.requiredPageProps = requiredPageProps;
+NotificationsSettings.pageLayout = pageLayout;
 export default NotificationsSettings;

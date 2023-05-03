@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { noti, validUserName } from "~/utils/other";
+import { noti } from "~/utils/other";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../../../server/api/trpc";
 
 export const postRouter = createTRPCRouter({
@@ -24,7 +24,7 @@ export const postRouter = createTRPCRouter({
           author: { connect: { id: ctx.session.user.id } },
           taggedUsers: {
             createMany: {
-              data: input.taggedUsersIds.map((id) => {
+              data: input.taggedUsersIds.map(id => {
                 return { taggedUserId: id };
               }),
             },
@@ -40,7 +40,7 @@ export const postRouter = createTRPCRouter({
         });
       }
 
-      const notificationsPromises = input.taggedUsersIds.map((id) => {
+      const notificationsPromises = input.taggedUsersIds.map(id => {
         return ctx.prisma.notification.create({
           data: {
             user: { connect: { id } },
@@ -103,7 +103,7 @@ export const postRouter = createTRPCRouter({
         });
 
         // dodawanie nowych zaznaczonych użytkowników
-        const createPromises = input.taggedUsersIds.map((id) => {
+        const createPromises = input.taggedUsersIds.map(id => {
           return ctx.prisma.taggedUser.create({
             data: {
               post: { connect: { id: input.postId } },
@@ -182,7 +182,7 @@ export const postRouter = createTRPCRouter({
       // sprawdzanie czy post istnieje
       if (!post) throw new Error("Can't toggle like of post that doesn't exists");
 
-      const currentUserLike = post.likes.find((like) => like.user.id == ctx.session.user.id);
+      const currentUserLike = post.likes.find(like => like.user.id == ctx.session.user.id);
 
       // usuwanie pulubienia jeśli użytkownik już polubł post
       if (currentUserLike) {
@@ -220,7 +220,7 @@ export const postRouter = createTRPCRouter({
       if (!post) throw new Error("Can't toggle like of post that doesn't exists");
 
       const currentUserBookmark = post.bookmarked.find(
-        (bookmarked) => bookmarked.user.id == ctx.session.user.id
+        bookmarked => bookmarked.user.id == ctx.session.user.id
       );
 
       // usuwanie pulubienia jeśli użytkownik już polubł post
@@ -254,7 +254,7 @@ export const postRouter = createTRPCRouter({
 
       if (!post) throw new Error("Can't mark as seen post that doesn't exists");
 
-      if (post.seenBy.some((seen) => seen.user.id == ctx.session.user.id)) {
+      if (post.seenBy.some(seen => seen.user.id == ctx.session.user.id)) {
         console.log(`Post with id ${input.postId} is already seen.`);
         return;
       }
@@ -301,7 +301,9 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         limit: z.number(),
+        authorId: z.string().optional(),
         cursor: z.string().nullish(), // <-- "cursor" needs to exist, but can be any type
+        orderBy: z.string().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -311,9 +313,9 @@ export const postRouter = createTRPCRouter({
         take: input.limit + 1, // get an extra item at the end which we'll use as next cursor
         cursor: cursor ? { id: cursor } : undefined,
         select: { id: true },
-        orderBy: {
-          createdAt: "desc",
-        },
+        orderBy:
+          input.orderBy == "likes-desc" ? { likes: { _count: "desc" } } : { createdAt: "desc" },
+        ...(input.authorId && { where: { authorId: input.authorId } }),
       });
       let nextCursor: typeof cursor | undefined = undefined;
       if (items.length > input.limit) {

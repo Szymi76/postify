@@ -1,10 +1,11 @@
-export const useOnKey = (key: string, onKeyDown: (e: KeyboardEvent) => void) => {
-  window.addEventListener("keydown", (e) => {
-    if (e.key == key) onKeyDown(e);
-  });
+import { type KeyboardEvent } from "react";
 
-  return () =>
-    window.removeEventListener("keydown", (e) => {
-      if (e.key == key) onKeyDown(e);
-    });
+export const useOnKey = (key: string, onKeyDown: (e: globalThis.KeyboardEvent) => void) => {
+  const handleKeyDown = (e: globalThis.KeyboardEvent) => {
+    if (e.key == key) onKeyDown(e);
+  };
+
+  window.addEventListener("keydown", handleKeyDown);
+
+  return () => window.removeEventListener("keydown", handleKeyDown);
 };

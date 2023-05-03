@@ -1,10 +1,9 @@
 import { useRouter } from "next/router";
 import React from "react";
-import Post from "~/components/Post/PostContainer";
-import { type PageComponentRequiredProps } from "~/layouts/ComponentRequiredPropsHandler";
-import ScrollablePage from "~/layouts/ScrollablePage";
+import Post from "~/components/Layouts/Post/PostContainer";
+import { Container } from "~/components/Shared";
 
-const Page = () => {
+const PostPage = () => {
   const router = useRouter();
   const { query } = router;
   const postId = typeof query.postId == "string" ? query.postId : null;
@@ -12,18 +11,10 @@ const Page = () => {
   if (typeof postId != "string") return <h1>Post nie istnieje</h1>;
 
   return (
-    <ScrollablePage>
-      <div className="content-wrapper">
-        <Post postId={postId} fullSection={true} />
-      </div>
-    </ScrollablePage>
+    <Container>
+      <Post postId={postId} fullSection={true} />
+    </Container>
   );
 };
 
-const requiredPageProps: PageComponentRequiredProps = {
-  auth: "for-all",
-  header: "include",
-};
-
-Page.requiredPageProps = requiredPageProps;
-export default Page;
+export default PostPage;

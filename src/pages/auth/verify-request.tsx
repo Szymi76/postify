@@ -1,38 +1,72 @@
 import ArrowLongLeftIcon from "@heroicons/react/24/outline/ArrowLongLeftIcon";
 import QuestionMarkCircleIcon from "@heroicons/react/24/outline/QuestionMarkCircleIcon";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 import PostifyLogo from "../../../public/logo_512x512_primary.png";
+import { type PageLayout } from "~/layouts/PageLayoutHandler";
+import { Box, Description, Flex, Headline, Icon, Paper, Tooltip } from "~/components/Shared";
+import { pages } from "~/constants";
+import styled from "styled-components";
+import Image from "next/image";
 
-const Page = () => {
-  const router = useRouter();
-
+const VerifyRequestPage = () => {
   return (
-    <div className="flex min-h-[100vh] w-full items-center justify-center bg-slate-100">
-      <main className="relative my-8 flex w-[475px] max-w-[90%] flex-col items-center gap-8 rounded-lg border border-slate-200 bg-white p-8">
-        <Link href="/">
-          <img src={PostifyLogo.src} height={80} width={80} alt="Logo postify" />
+    <Flex justify="center" items="center" style={{ height: "100%" }}>
+      <StyledPaper>
+        <Link href={pages.home}>
+          <Image src={PostifyLogo.src} height={80} width={80} alt="Logo postify" />
         </Link>
-        <h3 className="text-2xl font-semibold">Sprawdź swój email</h3>
-        <p className="text-center text-gray-500">
-          Link z logowaniem został wysłany na twoją skrzynkę pocztową.
-        </p>
-        <div className="tooltip tooltip-right absolute top-3 left-3" data-tip="Wróć do logowania">
-          <ArrowLongLeftIcon
-            onClick={() => router.back()}
-            className="h-8 cursor-pointer text-primary"
-          />
-        </div>
-        <div
-          className="tooltip  tooltip-left absolute top-3 right-3"
-          data-tip="Jeśli email nie dojedzie do ciebie w ciągu kilku minut, cofnij do strony logowania i spróbuj zalogować się ponownie."
-        >
-          <QuestionMarkCircleIcon className="h-8 text-gray-500" />
-        </div>
-      </main>
-    </div>
+        <Headline size="2xl">Sprawdź swój email</Headline>
+        <Description>Link z logowaniem został wysłany na twoją skrzynkę pocztową.</Description>
+        <Absolute alignIcon="top-left">
+          <Tooltip id="SignInPage-1" content="Wróć do logowania">
+            <Link href={pages.signin}>
+              <Icon>
+                <ArrowLongLeftIcon />
+              </Icon>
+            </Link>
+          </Tooltip>
+        </Absolute>
+
+        <Absolute alignIcon="top-right">
+          <Tooltip
+            id="SignInPage-2"
+            content="Jeśli email nie dojedzie do ciebie w ciągu kilku minut, cofnij do strony logowania i spróbuj zalogować się ponownie."
+          >
+            <Link href={pages.home}>
+              <Icon>
+                <QuestionMarkCircleIcon />
+              </Icon>
+            </Link>
+          </Tooltip>
+        </Absolute>
+      </StyledPaper>
+    </Flex>
   );
 };
 
-export default Page;
+const pageLayout: PageLayout = {
+  auth: "only-unauthenticated",
+  header: false,
+};
+
+VerifyRequestPage.pageLayout = pageLayout;
+export default VerifyRequestPage;
+
+const StyledPaper = styled(Paper)`
+  position: relative;
+  display: flex;
+  width: 475px;
+  max-width: 90%;
+  flex-direction: column;
+  align-items: center;
+  gap: ${props => props.theme.spacing.xl};
+`;
+
+type AbsoluteProps = { alignIcon: "top-left" | "top-right" };
+const Absolute = styled(Box)<AbsoluteProps>`
+  position: absolute;
+  top: 8px;
+  left: ${props => props.alignIcon == "top-left" && 8}px;
+  right: ${props => props.alignIcon == "top-right" && 8}px;
+`;

@@ -1,47 +1,44 @@
 import React from "react";
-import {
-  Modal,
-  ModalTitle,
-  ModalContent,
-  ModalFooter,
-  ModalScrollableList,
-} from "../../../hooks/useSetupModal";
-import { useGlobalModals } from "~/store/useGlobalModals";
-import { useInfiniteNotifications } from "~/components/Widgets/NotificationsWidget/hooks";
-import { NotificationCard } from "~/components/Global";
+import { useGlobalModals } from "../useGlobalModals";
+import { useInfiniteNotifications } from "~/hooks/useInfiniteQueryHelpers/useInfiniteNotifications";
+import { NotificationCard, Button, List, ListItem, ActionText } from "~/components/Shared";
+import { pages } from "~/constants";
+import Link from "next/link";
+import * as Modal from "~/components/Utils/Modal";
 
 const NotificationsModal = () => {
-  const { show, close } = useGlobalModals((state) => state.notificationsModal);
+  const { close } = useGlobalModals(state => state.notificationsModal);
   const { notifications, hasNextPage, fetchNextPage } = useInfiniteNotifications({
     limit: 3,
   });
 
-  if (!show) return <></>;
-
   return (
-    <Modal onClose={close}>
-      <ModalTitle>Aktywności</ModalTitle>
-      <ModalContent>
-        <ModalScrollableList>
-          {notifications?.map((noti) => {
-            return <NotificationCard key={noti.id} notification={noti} />;
-          })}
-          {hasNextPage && (
-            <p
-              className="mt-2 cursor-pointer text-center text-sm text-primary"
-              onClick={() => void fetchNextPage()}
-            >
-              Załaduj więcej
-            </p>
-          )}
-        </ModalScrollableList>
-      </ModalContent>
-      <ModalFooter>
-        <button className="btn-secondary btn-sm btn" onClick={close}>
-          Zamknij
-        </button>
-      </ModalFooter>
-    </Modal>
+    <Modal.Wrapper>
+      <Modal.Box onClose={close}>
+        <Modal.Title>Aktywności</Modal.Title>
+        <Modal.Content>
+          <List>
+            {notifications?.map(noti => {
+              return (
+                <ListItem key={noti.id}>
+                  <Link href={pages.profile(noti.creatorId)}>
+                    <NotificationCard notification={noti} />
+                  </Link>
+                </ListItem>
+              );
+            })}
+            {hasNextPage && (
+              <ActionText onClick={() => void fetchNextPage()}>Pokaż więcej</ActionText>
+            )}
+          </List>
+        </Modal.Content>
+        <Modal.Footer>
+          <Button color="secondary" onClick={close}>
+            Zamknij
+          </Button>
+        </Modal.Footer>
+      </Modal.Box>
+    </Modal.Wrapper>
   );
 };
 

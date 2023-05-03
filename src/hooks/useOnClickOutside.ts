@@ -1,11 +1,37 @@
-import { useEffect, useRef } from "react";
+import { useRef, useEffect, type RefObject, useCallback, useMemo } from "react";
 
-export default function <T extends HTMLElement>(handler: () => void) {
+export const useOnClickOutside = <T extends HTMLElement>(
+  callback: () => void,
+  ommitedElements?: RefObject<HTMLElement>[]
+) => {
   const ref = useRef<T>(null);
+
+  const isElementBelongToOmitted = useCallback((event: MouseEvent) => {
+    if (!ommitedElements) return false;
+
+    for (let i = 0; i < ommitedElements.length; i++) {
+      const omittedRef = ommitedElements[i];
+      if (
+        omittedRef &&
+        omittedRef.current &&
+        omittedRef.current.contains(event.target as Node | null)
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }, []);
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node | null)) handler();
+      if (
+        ref.current &&
+        !ref.current.contains(event.target as Node | null) &&
+        !isElementBelongToOmitted(event)
+      ) {
+        callback();
+      }
     };
 
     document.addEventListener("click", handleClick);
@@ -13,7 +39,7 @@ export default function <T extends HTMLElement>(handler: () => void) {
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, []);
+  }, [ref]);
 
   return ref;
-}
+};
