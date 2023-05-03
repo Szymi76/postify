@@ -80,6 +80,6 @@ declare module "styled-components" {
       "2xl": "1536px";
     };
 
-    variants: Variants;
+    variants?: Variants;
   }
 }

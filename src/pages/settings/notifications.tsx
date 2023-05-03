@@ -7,7 +7,7 @@ import { type PageLayout } from "~/layouts/PageLayoutHandler";
 const NotificationsSettings = () => {
   return (
     <Settings.Wrapper>
-      <SideBar currentPageHref={pages.settings.notifications} />
+      <SideBar />
       <Settings.FormWrapper>
         <Settings.FormContainer>
           <Settings.FormTitle>Powiadomienia</Settings.FormTitle>

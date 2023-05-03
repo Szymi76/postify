@@ -33,5 +33,5 @@ export const useFloatingElement = <T1 extends HTMLElement, T2 extends HTMLElemen
     else if (triggerIsHovered) onChange(true);
   }, [triggerIsHovered, elementIsHovered]);
 
-  return [triggerRef, elementRef];
+  return [triggerRef, elementRef] as const;
 };

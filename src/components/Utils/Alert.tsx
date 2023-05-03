@@ -15,7 +15,7 @@ export const Alert = (props: AlertProps) => {
   const [appendCloseAnimation, setAppendCloseAnimation] = useState(false);
   useTimeout(() => setAppendCloseAnimation(true), alert.timeout - SHOW_HIDE_ANIMATION_TIME);
 
-  const variant = theme.variants.alert[alert.type];
+  const variant = theme.variants!.alert[alert.type];
   const style = { color: variant.color };
 
   return (

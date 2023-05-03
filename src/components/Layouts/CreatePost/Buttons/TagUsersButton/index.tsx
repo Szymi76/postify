@@ -25,7 +25,7 @@ export const TagUsersButton = () => {
         Oznacz
       </Button>
       {show && (
-        <Modal.Wrapper show={show}>
+        <Modal.Wrapper>
           <Modal.Box onClose={close}>
             <Modal.Title>Oznacz inne osoby</Modal.Title>
             <Modal.Content>

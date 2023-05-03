@@ -59,5 +59,5 @@ function getProperty(args: {
   variant?: ButtonVariant;
 }) {
   const { theme, color, variant } = args;
-  return theme.variants.button[color ?? DEFAULT_COLOR_VARIANT][variant ?? DEFAULT_VARIANT];
+  return theme.variants!.button[color ?? DEFAULT_COLOR_VARIANT][variant ?? DEFAULT_VARIANT];
 }

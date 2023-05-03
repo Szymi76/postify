@@ -7,7 +7,7 @@ import { type PageLayout } from "~/layouts/PageLayoutHandler";
 const SecuritySettings = () => {
   return (
     <Settings.Wrapper>
-      <SideBar currentPageHref={pages.settings.security} />
+      <SideBar />
       <Settings.FormWrapper>
         <Settings.FormContainer>
           <Settings.FormTitle>Zabezpieczenia</Settings.FormTitle>

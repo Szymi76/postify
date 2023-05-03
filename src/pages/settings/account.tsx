@@ -9,7 +9,7 @@ import AccountForm from "~/components/Layouts/Settings/Forms/AccountFormContaine
 const AccountSettings = () => {
   return (
     <Settings.Wrapper>
-      <SideBar currentPageHref={pages.settings.account} />
+      <SideBar />
       <AccountForm />
     </Settings.Wrapper>
   );

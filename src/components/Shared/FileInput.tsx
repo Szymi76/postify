@@ -4,7 +4,7 @@ import { convertToUrl } from "~/utils/other";
 import styled from "styled-components";
 import Image from "next/image";
 
-type HTMLInputProps = React.ComponentProps<"input">;
+type HTMLInputProps = Omit<React.ComponentProps<"input">, "ref">;
 
 type FileInputProps = HTMLInputProps & {
   onClear?: () => void;

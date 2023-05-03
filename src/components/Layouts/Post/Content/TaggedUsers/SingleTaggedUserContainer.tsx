@@ -10,7 +10,9 @@ type SingleTaggedUserContainerProps = { user: User; isLastInList: boolean };
 const SingleTaggedUserContainer = (props: SingleTaggedUserContainerProps) => {
   const [show, setShow] = useState(false);
 
-  const [triggerRef, elementRef] = useFloatingElement(isHovering => setShow(isHovering));
+  const [triggerRef, elementRef] = useFloatingElement<HTMLAnchorElement, HTMLDivElement>(
+    isHovering => setShow(isHovering)
+  );
 
   return (
     <Flex style={{ position: "relative" }}>
