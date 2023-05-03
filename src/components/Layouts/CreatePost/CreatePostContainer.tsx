@@ -38,7 +38,7 @@ const CreatePostContainer = () => {
       const urls = (await Promise.all(imagesPromises)) as string[];
       await createNewPost({ text, images: urls, taggedUsersIds });
       setValues({ text: "", images: [], taggedUsersIds: [] });
-      await utils.post.getInfiniteLatestsPostsIds.refetch({ limit: 3 });
+      await utils.post.getInfiniteLatestsPostsIds.refetch({ limit: 5 });
     } catch (err) {
       console.warn("Nie udało się opublikować postu");
     } finally {
