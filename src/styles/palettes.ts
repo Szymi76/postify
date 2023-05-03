@@ -1,4 +1,5 @@
 export const palettes = {
+  // Jasny motyw
   light: {
     primary: "#3b82f6",
     gray: {
@@ -20,6 +21,7 @@ export const palettes = {
       error: "#ef4444",
     },
   },
+  // Ciemny motyw
   dark: {
     primary: "#3b82f6",
     gray: {
