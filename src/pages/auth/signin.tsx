@@ -41,12 +41,12 @@ const SignInPage = () => {
             }
           />
           <ProviderButton provider="discord" src={DiscordLogo.src} />
-          <Devider>LUB</Devider>
-          <EmailProvider />
+          {/* <Devider>LUB</Devider> */}
+          {/* <EmailProvider />
           <Description>
             Kliknięcie przycisku powyżej spowoduje wysłanie do twojej skrzynki wiadomości z
             logowaniem.
-          </Description>
+          </Description> */}
         </ProvidersWrapper>
 
         <Absolute alignIcon="top-left">

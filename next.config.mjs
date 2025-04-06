@@ -26,6 +26,7 @@ const config = {
       { hostname: "ucarecdn.com" },
       { hostname: "avatars.githubusercontent.com" },
       { hostname: "lh3.googleusercontent.com" },
+      { hostname: "cdn.discordapp.com" },
     ],
   },
 };
