@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://postify-vert.vercel.app">
+  <a href="[https://postify-vert.vercel.app](https://postify-three-coral.vercel.app)">
     <img src="public/logo_64x64_secondary.png" alt="Logo" width="80" height="80">
   </a>
 
