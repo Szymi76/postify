@@ -11,7 +11,7 @@
 
 ## O projekcie
 
-[![Zdjęcie strony głównej](public/postify_home.png)](https://postify-vert.vercel.app)
+[![Zdjęcie strony głównej](public/postify_home.png)
 
 Aplikacja umożliwia:
 * Publikowanie postów
