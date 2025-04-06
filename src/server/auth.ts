@@ -83,10 +83,10 @@ export const authOptions: NextAuthOptions = {
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
-    EmailProvider({
-      server: env.EMAIL_SERVER,
-      from: env.EMAIL_FROM,
-    }),
+    // EmailProvider({
+    //   server: env.EMAIL_SERVER,
+    //   from: env.EMAIL_FROM,
+    // }),
     /**
      * ...add more providers here.
      *
